@@ -339,13 +339,26 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
 .modal{max-width:560px;margin:0 auto;border-radius:16px;max-height:85vh;border:1px solid var(--border)}
 .modal-bg{align-items:center;padding:16px}
 .html-modal .modal{max-width:850px}
-.html-modal.mobile-fs{background:rgba(0,0,0,0.98)}
-.html-modal.mobile-fs .modal{width:100vw;height:100vh;max-width:100vw;max-height:100vh;border-radius:0;margin:0}
+.html-modal.mobile-fs{background:#000;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999}
+.html-modal.mobile-fs .modal{width:100vw;height:100vh;max-width:100vw;max-height:100vh;border-radius:0;margin:0;padding:0}
 .html-modal.mobile-fs .modal-head{display:none}
-.html-modal.mobile-fs .modal-body{height:100vh}
-.html-modal.mobile-fs .slideshow-wrap{height:85vh;aspect-ratio:auto}
-.html-modal.mobile-fs .ss-controls{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);padding:8px;z-index:100}
-.html-modal.mobile-fs .ss-next-hint{display:none}
+.html-modal.mobile-fs .modal-body{height:100vh;padding:0;overflow:hidden}
+.html-modal.mobile-fs .slideshow-wrap{height:100vh;width:100vw;aspect-ratio:auto}
+.html-modal.mobile-fs .slideshow{height:100%;width:100%}
+.html-modal.mobile-fs .ss-slide{height:100vh;padding:15px;box-sizing:border-box}
+.html-modal.mobile-fs .ss-title{font-size:clamp(24px,6vw,48px)!important;margin-bottom:10px}
+.html-modal.mobile-fs .ss-text-item{font-size:clamp(14px,3.5vw,24px)!important;padding:8px 0}
+.html-modal.mobile-fs .ss-item{font-size:clamp(14px,3.5vw,24px)!important}
+.html-modal.mobile-fs .ss-with-image{flex-direction:column;gap:15px;width:100%;max-width:100%}
+.html-modal.mobile-fs .ss-image-left{flex:none;width:100%;max-height:45vh}
+.html-modal.mobile-fs .ss-image-left img{max-height:45vh;width:auto;max-width:100%}
+.html-modal.mobile-fs .ss-content-right{width:100%;max-height:35vh;overflow-y:auto}
+.html-modal.mobile-fs .ss-controls{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.95);padding:10px;z-index:100;display:flex;justify-content:center;gap:10px}
+.html-modal.mobile-fs .ss-controls button{padding:12px 16px;font-size:16px}
+.html-modal.mobile-fs .ss-num{font-size:14px;bottom:60px}
+.html-modal.mobile-fs .ss-hint{display:none}
+.html-modal.mobile-fs .ss-timer{top:10px;right:10px;font-size:16px}
+.html-modal.mobile-fs+.modal-foot{display:none}
 }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -1962,7 +1975,6 @@ function ssPrev(){if(ssIdx>0){ssIdx--;updateSS();}}
 function ssNext(){if(ssIdx<slides.length-1){ssIdx++;updateSS();}}
 function ssFullscreen(){
     const el=document.getElementById('slideshow');
-    const wrap=document.getElementById('htmlModal');
     // 嘗試各種全螢幕 API
     if(el.requestFullscreen){
         el.requestFullscreen().catch(()=>mobileFullscreen());
@@ -1973,20 +1985,52 @@ function ssFullscreen(){
     }else if(document.documentElement.webkitRequestFullscreen){
         document.documentElement.webkitRequestFullscreen();
     }else{
-        // 手機備用方案：模擬全螢幕
         mobileFullscreen();
     }
 }
 function mobileFullscreen(){
     const modal=document.getElementById('htmlModal');
-    const wrap=document.querySelector('.slideshow-wrap');
     if(modal.classList.contains('mobile-fs')){
         modal.classList.remove('mobile-fs');
+        document.body.style.overflow='';
         toast('📱 退出全螢幕','ok');
     }else{
         modal.classList.add('mobile-fs');
-        toast('📱 手機全螢幕模式（再按一次退出）','ok');
+        document.body.style.overflow='hidden';
+        toast('📱 全螢幕模式 - 左右滑動換頁','ok');
+        setupTouchGestures();
     }
+}
+
+// 觸控手勢支援
+let touchStartX=0,touchStartY=0;
+function setupTouchGestures(){
+    const slideshow=document.getElementById('slideshow');
+    if(!slideshow)return;
+    
+    slideshow.ontouchstart=(e)=>{
+        touchStartX=e.touches[0].clientX;
+        touchStartY=e.touches[0].clientY;
+    };
+    slideshow.ontouchend=(e)=>{
+        const touchEndX=e.changedTouches[0].clientX;
+        const touchEndY=e.changedTouches[0].clientY;
+        const diffX=touchEndX-touchStartX;
+        const diffY=touchEndY-touchStartY;
+        
+        // 水平滑動超過 50px 且大於垂直滑動
+        if(Math.abs(diffX)>50 && Math.abs(diffX)>Math.abs(diffY)){
+            if(diffX>0){
+                ssPrev(); // 右滑 = 上一頁
+            }else{
+                ssNextItem(); // 左滑 = 下一段/下一頁
+            }
+        }
+        // 點擊（滑動小於 10px）= 下一段
+        else if(Math.abs(diffX)<10 && Math.abs(diffY)<10){
+            ssNextItem();
+        }
+    };
 }
 
 function esc(t){if(!t)return'';const d=document.createElement('div');d.textContent=t;return d.innerHTML;}
