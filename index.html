@@ -1891,9 +1891,18 @@ function openHtml(){
     }
 }
 function closeHtml(){
-    document.getElementById('htmlModal').classList.remove('on');
+    const modal=document.getElementById('htmlModal');
+    modal.classList.remove('on');
+    modal.classList.remove('mobile-fs');
+    document.body.style.overflow='';
     if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
     if(voiceEnabled)speechSynthesis.cancel();
+    // 移除觸控事件
+    const slideshow=document.getElementById('slideshow');
+    if(slideshow){
+        slideshow.ontouchstart=null;
+        slideshow.ontouchend=null;
+    }
 }
 
 function renderSS(){
@@ -1980,7 +1989,13 @@ function ssNextItem(){
         if(itemIdx<items.length){
             items[itemIdx].style.cssText=items[itemIdx].dataset.show;
         }else{
-            if(ssIdx<slides.length-1){ssIdx++;updateSS();}
+            if(ssIdx<slides.length-1){
+                ssIdx++;
+                updateSS();
+            }else{
+                // 播放結束
+                toast('🎉 簡報播放完畢','ok');
+            }
         }
     }
 }
@@ -2052,7 +2067,16 @@ function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function toast(m,t='ok'){const el=document.createElement('div');el.className='toast '+t;el.innerHTML=m;document.getElementById('toastBox').appendChild(el);setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),300);},2500);}
 
 
-document.querySelectorAll('.modal-bg').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('on');});
+document.querySelectorAll('.modal-bg').forEach(m=>m.onclick=e=>{
+    if(e.target===m){
+        m.classList.remove('on');
+        // 如果是 htmlModal，執行完整關閉
+        if(m.id==='htmlModal'){
+            m.classList.remove('mobile-fs');
+            document.body.style.overflow='';
+        }
+    }
+});
 
 document.addEventListener('keydown',e=>{
     if(!document.getElementById('htmlModal').classList.contains('on'))return;
