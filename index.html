@@ -359,6 +359,20 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
 .html-modal.mobile-fs .ss-hint{display:none}
 .html-modal.mobile-fs .ss-timer{top:10px;right:10px;font-size:16px}
 .html-modal.mobile-fs+.modal-foot{display:none}
+
+/* 手機橫放時：左圖右文 */
+@media screen and (orientation:landscape) and (max-height:500px){
+.html-modal.mobile-fs .ss-slide{padding:10px 15px}
+.html-modal.mobile-fs .ss-title{font-size:clamp(18px,4vw,32px)!important;margin-bottom:5px}
+.html-modal.mobile-fs .ss-with-image{flex-direction:row!important;gap:20px;align-items:flex-start}
+.html-modal.mobile-fs .ss-image-left{flex:0 0 50%;max-height:75vh;width:auto}
+.html-modal.mobile-fs .ss-image-left img{max-height:70vh;max-width:100%;width:auto}
+.html-modal.mobile-fs .ss-content-right{flex:1;max-height:70vh;overflow-y:auto}
+.html-modal.mobile-fs .ss-text-item{font-size:clamp(12px,2.5vw,18px)!important;padding:5px 0}
+.html-modal.mobile-fs .ss-controls{padding:6px}
+.html-modal.mobile-fs .ss-controls button{padding:8px 12px;font-size:14px}
+.html-modal.mobile-fs .ss-num{bottom:50px;font-size:12px}
+}
 }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
