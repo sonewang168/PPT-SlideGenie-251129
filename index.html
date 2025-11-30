@@ -121,6 +121,7 @@ textarea.inp{min-height:60px;resize:none;line-height:1.4}
 .m-btn-orange{background:var(--grad-orange);border:none;color:#fff}
 .m-btn-green{background:var(--grad-green);border:none;color:#fff}
 .m-btn-purple{background:var(--grad-purple);border:none;color:#fff}
+.m-btn-cyan{background:linear-gradient(135deg,#06b6d4,#0891b2);border:none;color:#fff}
 
 /* 設定 */
 .set-sec{margin-bottom:20px}
@@ -188,9 +189,15 @@ textarea.inp{min-height:60px;resize:none;line-height:1.4}
 .slideshow{position:absolute;inset:0;overflow:hidden}
 .ss-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6%;opacity:0;pointer-events:none}
 .ss-slide.on{opacity:1;pointer-events:auto}
-.ss-title{font-size:clamp(20px,4.5vw,48px);font-weight:700;text-align:center;margin-bottom:3%}
-.ss-subtitle{font-size:clamp(12px,2.2vw,24px);opacity:0.75;margin-bottom:3%;text-align:center}
+.ss-title{font-size:clamp(40px,9vw,96px);font-weight:700;text-align:center;margin-bottom:3%}
+.ss-subtitle{font-size:clamp(24px,4.4vw,48px);opacity:0.75;margin-bottom:3%;text-align:center}
 .ss-content{width:100%;max-width:85%}
+.ss-with-image{display:flex;gap:30px;width:98%;max-width:1600px;margin-top:20px;align-items:flex-start}
+.ss-image-left{flex:0 0 65%}
+.ss-image-left img{width:100%;max-height:85vh;object-fit:contain;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.5)}
+.ss-content-right{flex:1;text-align:left}
+.ss-text-item{font-size:clamp(18px,3.5vw,36px);padding:12px 0;opacity:1;line-height:1.5;border-bottom:1px solid rgba(255,255,255,0.15)}
+.ss-text-item:last-child{border-bottom:none}
 .ss-item{font-size:clamp(12px,2.2vw,22px);padding:10px 0;opacity:0;border-bottom:1px solid rgba(255,255,255,0.1)}
 .ss-item:last-child{border-bottom:none}
 .ss-num{position:absolute;bottom:2%;right:3%;font-size:clamp(9px,1.3vw,12px);opacity:0.4}
@@ -235,6 +242,30 @@ body.light .modal{background:#f8fafc}
 .quiz-opt.correct{background:rgba(16,185,129,0.2);border-color:var(--green);color:var(--green)}
 .quiz-opt.wrong{background:rgba(239,68,68,0.2);border-color:var(--red);color:var(--red)}
 .quiz-score{text-align:center;font-family:'Orbitron',sans-serif;font-size:32px;color:var(--cyan);margin:20px 0}
+
+/* PDF 工具 */
+.pdf-tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.pdf-tool-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all 0.2s}
+.pdf-tool-card:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.pdf-tool-icon{font-size:32px;margin-bottom:8px}
+.pdf-tool-name{font-weight:600;color:var(--text-primary);margin-bottom:4px}
+.pdf-tool-desc{font-size:11px;color:var(--text-muted)}
+.pdf-tool-status{margin-top:16px;padding:12px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:12px;color:var(--text-secondary);display:none}
+.pdf-tool-status.on{display:block}
+.pdf-tool-result{margin-top:12px}
+.pdf-info{background:rgba(6,182,212,0.1);border:1px solid var(--cyan);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:var(--cyan)}
+
+/* 提取圖片結果 */
+.extracted-images-header{margin-bottom:16px}
+.extracted-images-header h3{font-size:14px;color:var(--cyan);margin-bottom:12px}
+.extracted-actions{display:flex;gap:8px;flex-wrap:wrap}
+.extracted-images-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;max-height:400px;overflow-y:auto;padding:4px}
+.extracted-img-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:6px;text-align:center}
+.extracted-img-card img{width:100%;height:60px;object-fit:contain;cursor:pointer;border-radius:4px;background:#000}
+.extracted-img-card img:hover{opacity:0.8}
+.extracted-img-info{font-size:9px;color:var(--text-muted);margin-top:4px}
+.extracted-img-check{display:flex;align-items:center;justify-content:center;gap:4px;font-size:10px;color:var(--text-secondary);margin-top:2px}
+.extracted-img-check input{width:12px;height:12px}
 
 /* 編輯 */
 .edit-field{margin-bottom:14px}
@@ -317,6 +348,9 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
 .html-modal.mobile-fs .ss-next-hint{display:none}
 }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 </head>
 <body>
 <div class="bg-grid"></div>
@@ -366,10 +400,12 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
                     <button class="tool-btn" onclick="openUrlModal()">🔗 網址</button>
                     <button class="tool-btn" onclick="openDataModal()">📊 數據</button>
                     <button class="tool-btn" onclick="randomTopic()">🎲 隨機</button>
-                    
+                    <button class="tool-btn" onclick="openPdfTools()">📑 PDF工具</button>
                 </div>
                 <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="handleImage(this)">
                 <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.txt,.md" style="display:none" onchange="handleFile(this)">
+                <input type="file" id="pdfUpload" accept=".pdf" style="display:none" onchange="handlePdfUpload(this)">
+                <input type="file" id="pdfMergeUpload" accept=".pdf" multiple style="display:none" onchange="handlePdfMerge(this)">
             </div>
         </div>
 
@@ -583,7 +619,7 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
             </div>
             <div style="display:flex;gap:6px;width:100%">
                 <button class="m-btn m-btn-sec" onclick="closePreview()" style="flex:1">✕</button>
-                
+                <button class="m-btn m-btn-cyan" onclick="openHtml()" style="flex:1">🌐 網頁</button>
                 <button class="m-btn m-btn-green" onclick="generateQuiz()" style="flex:1">🎯 測驗</button>
                 <button class="m-btn m-btn-purple" onclick="openCanvaFromPreview()" style="flex:1">🎨 Canva</button>
                 <button class="m-btn m-btn-pri" onclick="downloadPPTX()" style="flex:1">📥 PPTX</button>
@@ -807,6 +843,79 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
     </div>
 </div>
 
+<!-- PDF 工具 Modal -->
+<div class="modal-bg" id="pdfToolsModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">📑 PDF 工具箱</div><button class="modal-x" onclick="closePdfTools()">✕</button></div>
+        <div class="modal-body">
+            <div class="pdf-tools-grid">
+                <div class="pdf-tool-card" onclick="document.getElementById('pdfUpload').click()">
+                    <div class="pdf-tool-icon">✂️</div>
+                    <div class="pdf-tool-name">分割 PDF</div>
+                    <div class="pdf-tool-desc">將 PDF 拆成多個檔案</div>
+                </div>
+                <div class="pdf-tool-card" onclick="document.getElementById('pdfMergeUpload').click()">
+                    <div class="pdf-tool-icon">🔗</div>
+                    <div class="pdf-tool-name">合併 PDF</div>
+                    <div class="pdf-tool-desc">多個 PDF 合成一個</div>
+                </div>
+                <div class="pdf-tool-card" onclick="startPdfExtract()">
+                    <div class="pdf-tool-icon">📝</div>
+                    <div class="pdf-tool-name">提取文字</div>
+                    <div class="pdf-tool-desc">PDF 轉純文字</div>
+                </div>
+                <div class="pdf-tool-card" onclick="startPdfPageExtract()">
+                    <div class="pdf-tool-icon">📄</div>
+                    <div class="pdf-tool-name">提取頁面</div>
+                    <div class="pdf-tool-desc">擷取指定頁面</div>
+                </div>
+                <div class="pdf-tool-card" onclick="startPdfImageExtract()">
+                    <div class="pdf-tool-icon">🖼️</div>
+                    <div class="pdf-tool-name">提取圖片</div>
+                    <div class="pdf-tool-desc">擷取 PDF 內所有圖片</div>
+                </div>
+                <div class="pdf-tool-card" onclick="startPdfToSlides()">
+                    <div class="pdf-tool-icon">🤖</div>
+                    <div class="pdf-tool-name">AI 圖片轉簡報</div>
+                    <div class="pdf-tool-desc">解析圖片內容生成簡報</div>
+                </div>
+            </div>
+            <div id="pdfToolStatus" class="pdf-tool-status"></div>
+            <div id="pdfToolResult" class="pdf-tool-result"></div>
+        </div>
+    </div>
+</div>
+
+<!-- PDF 分割設定 Modal -->
+<div class="modal-bg" id="pdfSplitModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">✂️ PDF 分割</div><button class="modal-x" onclick="closePdfSplit()">✕</button></div>
+        <div class="modal-body">
+            <div class="pdf-info" id="pdfSplitInfo"></div>
+            <div class="set-sec">
+                <div class="set-label">分割方式</div>
+                <div class="chips" id="splitModeChips">
+                    <div class="chip on" data-v="each" onclick="setSplitMode('each')">每頁一檔</div>
+                    <div class="chip" data-v="range" onclick="setSplitMode('range')">指定範圍</div>
+                    <div class="chip" data-v="count" onclick="setSplitMode('count')">每 N 頁</div>
+                </div>
+            </div>
+            <div id="splitRangeInput" style="display:none;margin-top:12px">
+                <div class="set-label">頁面範圍（例：1-3, 5, 7-10）</div>
+                <input type="text" id="splitRange" class="edit-inp" placeholder="1-3, 5, 7-10">
+            </div>
+            <div id="splitCountInput" style="display:none;margin-top:12px">
+                <div class="set-label">每幾頁分割一次</div>
+                <input type="number" id="splitCount" class="edit-inp" value="5" min="1" max="100">
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closePdfSplit()">✕ 取消</button>
+            <button class="m-btn m-btn-pri" onclick="executePdfSplit()">✂️ 開始分割</button>
+        </div>
+    </div>
+</div>
+
 <div class="toast-box" id="toastBox"></div>
 
 <script>
@@ -970,7 +1079,7 @@ ${input}
 只回傳JSON`;
         const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
             method:'POST',headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
+            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:1000}})
         });
         if(!r.ok)throw new Error('API錯誤');
         const txt=(await r.json()).candidates[0].content.parts[0].text;
@@ -1073,37 +1182,84 @@ let fileContent='';
 function handleFile(input){
     const file=input.files[0];
     if(!file)return;
+    const ext=file.name.split('.').pop().toLowerCase();
     document.getElementById('fileInfo').textContent=`📄 ${file.name} (${(file.size/1024).toFixed(1)}KB)`;
+    document.getElementById('fileContent').textContent='⏳ 讀取中...';
+    document.getElementById('fileModal').classList.add('on');
     
-    if(file.name.endsWith('.txt')||file.name.endsWith('.md')){
+    if(ext==='txt'||ext==='md'){
+        // 純文字
         const reader=new FileReader();
         reader.onload=(e)=>{
             fileContent=e.target.result;
-            document.getElementById('fileContent').textContent=fileContent.substring(0,1000)+(fileContent.length>1000?'...':'');
-            document.getElementById('fileModal').classList.add('on');
+            document.getElementById('fileContent').textContent=fileContent.substring(0,1500)+(fileContent.length>1500?'...':'');
         };
         reader.readAsText(file);
+    }else if(ext==='pdf'){
+        // PDF
+        const reader=new FileReader();
+        reader.onload=async(e)=>{
+            try{
+                if(typeof pdfjsLib==='undefined'){toast('❌ PDF 函式庫未載入','err');return;}
+                pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                const pdf=await pdfjsLib.getDocument({data:e.target.result}).promise;
+                let txt='';
+                const maxPages=Math.min(pdf.numPages,100);
+                for(let i=1;i<=maxPages;i++){
+                    const page=await pdf.getPage(i);
+                    const content=await page.getTextContent();
+                    txt+=content.items.map(x=>x.str).join(' ')+'\n\n';
+                }
+                fileContent=txt.trim();
+                document.getElementById('fileContent').textContent=fileContent.substring(0,1500)+(fileContent.length>1500?'...\n\n(共 '+pdf.numPages+' 頁)':'');
+                toast('✅ PDF 讀取完成','ok');
+            }catch(err){
+                console.error('PDF error:',err);
+                document.getElementById('fileContent').textContent='❌ PDF 讀取失敗：'+err.message;
+                fileContent='';
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }else if(ext==='docx'){
+        // DOCX
+        const reader=new FileReader();
+        reader.onload=async(e)=>{
+            try{
+                if(typeof mammoth==='undefined'){toast('❌ DOCX 函式庫未載入','err');return;}
+                const result=await mammoth.extractRawText({arrayBuffer:e.target.result});
+                fileContent=result.value.trim();
+                document.getElementById('fileContent').textContent=fileContent.substring(0,1500)+(fileContent.length>1500?'...':'');
+                toast('✅ DOCX 讀取完成','ok');
+            }catch(err){
+                console.error('DOCX error:',err);
+                document.getElementById('fileContent').textContent='❌ DOCX 讀取失敗：'+err.message;
+                fileContent='';
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }else if(ext==='doc'){
+        document.getElementById('fileContent').textContent='⚠️ .doc 舊格式不支援直接讀取\n\n請用 Word 另存為 .docx 格式後再上傳\n或將內容複製貼到「補充說明」欄位';
+        fileContent='';
     }else{
-        fileContent='[檔案類型：'+file.name.split('.').pop().toUpperCase()+']';
-        document.getElementById('fileContent').textContent='⚠️ 僅支援 .txt 和 .md 檔案內容讀取\n其他格式請手動複製內容到補充說明';
-        document.getElementById('fileModal').classList.add('on');
+        document.getElementById('fileContent').textContent='⚠️ 不支援此檔案格式\n\n支援格式：PDF, DOCX, TXT, MD';
+        fileContent='';
     }
     input.value='';
 }
 function closeFileModal(){document.getElementById('fileModal').classList.remove('on');fileContent='';}
 async function processFile(){
-    if(!fileContent||fileContent.startsWith('[')){toast('❌ 無法讀取檔案內容','warn');return;}
+    if(!fileContent||!fileContent.trim()){toast('❌ 無法讀取檔案內容','warn');return;}
     const apiKey=document.getElementById('apiInp').value.trim();
     if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
     
     toast('🔄 分析文件...','warn');
     try{
         const prompt=`分析以下文件內容，提取主題和重點：
-${fileContent.substring(0,3000)}
+${fileContent.substring(0,4000)}
 
-請回傳：{"topic":"主題名稱","details":"內容摘要重點（100字內）"}
-只回傳JSON`;
-        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+請回傳 JSON 格式：{"topic":"主題名稱","details":"內容摘要重點（150字內）"}
+只回傳JSON，不要其他文字`;
+        const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+apiKey,{
             method:'POST',headers:{'Content-Type':'application/json'},
             body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
         });
@@ -1452,6 +1608,7 @@ function showPreview(){
             <div class="slide-body">
                 <div class="slide-title">${esc(s.title)}</div>
                 ${s.subtitle?`<div style="color:var(--text-muted);margin-bottom:6px;font-size:11px">${esc(s.subtitle)}</div>`:''}
+                ${s.image?`<div class="slide-image"><img src="${s.image}" style="max-width:100%;max-height:120px;border-radius:6px;margin-bottom:8px"></div>`:''}
                 <div class="slide-content">${Array.isArray(s.content)?'<ul>'+s.content.map(c=>`<li>${esc(c)}</li>`).join('')+'</ul>':esc(s.content||'')}</div>
                 ${s.notes?`<div class="slide-notes">💬 ${esc(s.notes)}</div>`:''}
                 ${s.imageKeyword?`<div class="slide-img">🖼️ ${esc(s.imageKeyword)}</div>`:''}
@@ -1522,6 +1679,7 @@ function downloadPPTX(){
             if(isCover){
                 s.background={color:theme.c1};
             }else{s.background={color:'FFFFFF'};}
+            
             if(sl.type==='封面'){
                 s.addText(sl.title||'',{x:0.5,y:2,w:9,h:1.2,fontSize:36,bold:true,color:'FFFFFF',align:'center'});
                 if(sl.subtitle)s.addText(sl.subtitle,{x:0.5,y:3.3,w:9,h:0.6,fontSize:18,color:'FFFFFF',align:'center'});
@@ -1531,10 +1689,28 @@ function downloadPPTX(){
                     s.addText(sl.content.map(x=>'✓ '+x).join('\n'),{x:1,y:1.8,w:8,h:3.5,fontSize:16,color:'FFFFFF',lineSpacing:28});
                 }
             }else{
+                // 內容頁
                 s.addShape('rect',{x:0,y:0,w:10,h:1.1,fill:{type:'solid',color:theme.c1}});
                 s.addText(sl.title||'',{x:0.4,y:0.2,w:9,h:0.7,fontSize:22,bold:true,color:'FFFFFF'});
-                if(Array.isArray(sl.content)&&sl.content.length){
-                    s.addText(sl.content.map(x=>({text:x||'',options:{bullet:true}})),{x:0.4,y:1.3,w:9,h:4,fontSize:14,color:'333333',paraSpaceAfter:8});
+                
+                // 有圖片的頁面：左圖右文
+                if(sl.image){
+                    try{
+                        s.addImage({data:sl.image,x:0.3,y:1.3,w:4,h:3.5,sizing:{type:'contain',w:4,h:3.5}});
+                        if(Array.isArray(sl.content)&&sl.content.length){
+                            s.addText(sl.content.map(x=>({text:'• '+x+'\n',options:{fontSize:13,color:'333333'}})),{x:4.5,y:1.3,w:5,h:3.5,valign:'top'});
+                        }
+                    }catch(imgErr){
+                        // 圖片失敗就只放文字
+                        if(Array.isArray(sl.content)&&sl.content.length){
+                            s.addText(sl.content.map(x=>({text:x||'',options:{bullet:true}})),{x:0.4,y:1.3,w:9,h:4,fontSize:14,color:'333333',paraSpaceAfter:8});
+                        }
+                    }
+                }else{
+                    // 無圖片：正常文字
+                    if(Array.isArray(sl.content)&&sl.content.length){
+                        s.addText(sl.content.map(x=>({text:x||'',options:{bullet:true}})),{x:0.4,y:1.3,w:9,h:4,fontSize:14,color:'333333',paraSpaceAfter:8});
+                    }
                 }
             }
             s.addText(String(sl.number||''),{x:9.2,y:5.2,w:0.5,h:0.3,fontSize:11,color:'94A3B8',align:'right'});
@@ -1700,6 +1876,31 @@ function renderSS(){
             const anim=slideAnims[i]||{title:0,subtitle:0,items:[]};
             const titleAnim=animations[anim.title]||animations[0];
             const subAnim=animations[anim.subtitle]||animations[0];
+            
+            // 有圖片：左圖右文佈局（有動畫）
+            if(s.image && s.type!=='封面' && s.type!=='總結'){
+                let textItems='';
+                if(Array.isArray(s.content)){
+                    textItems=s.content.map((c,j)=>{
+                        const itemAnim=animations[anim.items[j]]||animations[0];
+                        return `<div class="ss-text-item" data-idx="${j}" style="${itemAnim.style}" data-show="${itemAnim.show}">• ${esc(c)}</div>`;
+                    }).join('');
+                }else if(s.content){
+                    const itemAnim=animations[anim.items[0]]||animations[0];
+                    textItems=`<div class="ss-text-item" data-idx="0" style="${itemAnim.style}" data-show="${itemAnim.show}">${esc(s.content)}</div>`;
+                }
+                return `<div class="ss-slide ${i===0?'on':''}" style="background:${theme.css};color:#fff" data-i="${i}">
+                    <div class="ss-title" style="${titleAnim.style}" data-show="${titleAnim.show}">${esc(s.title||'')}</div>
+                    <div class="ss-with-image">
+                        <div class="ss-image-left"><img src="${s.image}"></div>
+                        <div class="ss-content-right">${textItems}</div>
+                    </div>
+                    <div class="ss-num">${s.number||i+1}/${slides.length}</div>
+                    <div class="ss-hint">點擊 = 下一段</div>
+                </div>`;
+            }
+            
+            // 無圖片：原本佈局（有動畫）
             let items='';
             if(Array.isArray(s.content)){
                 items=s.content.map((c,j)=>{
@@ -1710,6 +1911,7 @@ function renderSS(){
                 const itemAnim=animations[anim.items[0]]||animations[0];
                 items=`<div class="ss-item" data-idx="0" style="${itemAnim.style}" data-show="${itemAnim.show}">${esc(s.content)}</div>`;
             }
+            
             return `<div class="ss-slide ${i===0?'on':''}" style="background:${theme.css};color:#fff" data-i="${i}">
                 <div class="ss-title" style="${titleAnim.style}" data-show="${titleAnim.show}">${esc(s.title||'')}</div>
                 ${s.subtitle?`<div class="ss-subtitle" style="${subAnim.style}" data-show="${subAnim.show}">${esc(s.subtitle)}</div>`:''}
@@ -1740,18 +1942,16 @@ function ssNextItem(){
     if(!slide)return;
     const title=slide.querySelector('.ss-title');
     const subtitle=slide.querySelector('.ss-subtitle');
-    const items=slide.querySelectorAll('.ss-item');
-    const animNameEl=document.getElementById('animName'+ssIdx);
+    const items=slide.querySelectorAll('.ss-item, .ss-text-item');
     ssItemIdx++;
     if(ssItemIdx===0){
-        if(title){title.style.cssText=title.dataset.show;animNameEl.textContent=animations[slideAnims[ssIdx].title].name;}
+        if(title){title.style.cssText=title.dataset.show;}
     }else if(ssItemIdx===1&&subtitle){
-        subtitle.style.cssText=subtitle.dataset.show;animNameEl.textContent=animations[slideAnims[ssIdx].subtitle].name;
+        subtitle.style.cssText=subtitle.dataset.show;
     }else{
         const itemIdx=subtitle?ssItemIdx-2:ssItemIdx-1;
         if(itemIdx<items.length){
             items[itemIdx].style.cssText=items[itemIdx].dataset.show;
-            animNameEl.textContent=animations[slideAnims[ssIdx].items[itemIdx]].name;
         }else{
             if(ssIdx<slides.length-1){ssIdx++;updateSS();}
         }
@@ -2063,6 +2263,639 @@ function speakSlide(s){
     speechSynthesis.speak(u);
     document.getElementById('pauseBtn').textContent='⏸️ 暫停';
     voicePaused=false;
+}
+
+// ===== PDF 工具箱 =====
+let pdfDoc=null,pdfFileName='',splitMode='each';
+
+function openPdfTools(){document.getElementById('pdfToolsModal').classList.add('on');}
+function closePdfTools(){document.getElementById('pdfToolsModal').classList.remove('on');document.getElementById('pdfToolStatus').classList.remove('on');}
+function closePdfSplit(){document.getElementById('pdfSplitModal').classList.remove('on');}
+
+function setSplitMode(mode){
+    splitMode=mode;
+    document.querySelectorAll('#splitModeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===mode));
+    document.getElementById('splitRangeInput').style.display=mode==='range'?'block':'none';
+    document.getElementById('splitCountInput').style.display=mode==='count'?'block':'none';
+}
+
+// 上傳 PDF 進行分割
+async function handlePdfUpload(input){
+    const file=input.files[0];
+    if(!file)return;
+    input.value='';
+    pdfFileName=file.name.replace('.pdf','');
+    
+    const status=document.getElementById('pdfToolStatus');
+    status.classList.add('on');
+    status.innerHTML='⏳ 讀取 PDF 中...';
+    
+    try{
+        const arrayBuffer=await file.arrayBuffer();
+        pdfDoc=await PDFLib.PDFDocument.load(arrayBuffer);
+        const pageCount=pdfDoc.getPageCount();
+        
+        document.getElementById('pdfSplitInfo').innerHTML=`📄 <strong>${file.name}</strong><br>共 ${pageCount} 頁，檔案大小 ${(file.size/1024/1024).toFixed(2)} MB`;
+        status.classList.remove('on');
+        closePdfTools();
+        document.getElementById('pdfSplitModal').classList.add('on');
+    }catch(e){
+        status.innerHTML='❌ PDF 讀取失敗：'+e.message;
+    }
+}
+
+// 執行分割
+async function executePdfSplit(){
+    if(!pdfDoc){toast('❌ 請先上傳 PDF','err');return;}
+    toast('✂️ 分割中...','warn');
+    
+    try{
+        const pageCount=pdfDoc.getPageCount();
+        const pdfs=[];
+        
+        if(splitMode==='each'){
+            // 每頁一檔
+            for(let i=0;i<pageCount;i++){
+                const newPdf=await PDFLib.PDFDocument.create();
+                const [page]=await newPdf.copyPages(pdfDoc,[i]);
+                newPdf.addPage(page);
+                pdfs.push({name:`${pdfFileName}_第${i+1}頁.pdf`,doc:newPdf});
+            }
+        }else if(splitMode==='range'){
+            // 指定範圍
+            const ranges=document.getElementById('splitRange').value.split(',').map(r=>r.trim());
+            for(const range of ranges){
+                const newPdf=await PDFLib.PDFDocument.create();
+                if(range.includes('-')){
+                    const [start,end]=range.split('-').map(n=>parseInt(n));
+                    const indices=[];
+                    for(let i=start-1;i<end&&i<pageCount;i++)indices.push(i);
+                    const pages=await newPdf.copyPages(pdfDoc,indices);
+                    pages.forEach(p=>newPdf.addPage(p));
+                    pdfs.push({name:`${pdfFileName}_${start}-${end}.pdf`,doc:newPdf});
+                }else{
+                    const idx=parseInt(range)-1;
+                    if(idx>=0&&idx<pageCount){
+                        const [page]=await newPdf.copyPages(pdfDoc,[idx]);
+                        newPdf.addPage(page);
+                        pdfs.push({name:`${pdfFileName}_第${range}頁.pdf`,doc:newPdf});
+                    }
+                }
+            }
+        }else if(splitMode==='count'){
+            // 每 N 頁
+            const n=parseInt(document.getElementById('splitCount').value)||5;
+            for(let i=0;i<pageCount;i+=n){
+                const newPdf=await PDFLib.PDFDocument.create();
+                const indices=[];
+                for(let j=i;j<i+n&&j<pageCount;j++)indices.push(j);
+                const pages=await newPdf.copyPages(pdfDoc,indices);
+                pages.forEach(p=>newPdf.addPage(p));
+                pdfs.push({name:`${pdfFileName}_${i+1}-${Math.min(i+n,pageCount)}.pdf`,doc:newPdf});
+            }
+        }
+        
+        // 下載所有檔案
+        for(const pdf of pdfs){
+            const bytes=await pdf.doc.save();
+            const blob=new Blob([bytes],{type:'application/pdf'});
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;a.download=pdf.name;
+            document.body.appendChild(a);a.click();document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            await new Promise(r=>setTimeout(r,300));
+        }
+        
+        toast(`✅ 已分割成 ${pdfs.length} 個檔案`,'ok');
+        closePdfSplit();
+    }catch(e){
+        console.error(e);
+        toast('❌ 分割失敗：'+e.message,'err');
+    }
+}
+
+// 合併 PDF
+async function handlePdfMerge(input){
+    const files=Array.from(input.files);
+    if(files.length<2){toast('❌ 請選擇至少 2 個 PDF','warn');return;}
+    input.value='';
+    
+    const status=document.getElementById('pdfToolStatus');
+    status.classList.add('on');
+    status.innerHTML=`⏳ 合併 ${files.length} 個 PDF 中...`;
+    
+    try{
+        const mergedPdf=await PDFLib.PDFDocument.create();
+        
+        for(let i=0;i<files.length;i++){
+            status.innerHTML=`⏳ 處理第 ${i+1}/${files.length} 個檔案...`;
+            const arrayBuffer=await files[i].arrayBuffer();
+            const pdf=await PDFLib.PDFDocument.load(arrayBuffer);
+            const pages=await mergedPdf.copyPages(pdf,pdf.getPageIndices());
+            pages.forEach(p=>mergedPdf.addPage(p));
+        }
+        
+        const bytes=await mergedPdf.save();
+        const blob=new Blob([bytes],{type:'application/pdf'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;a.download='合併檔案.pdf';
+        document.body.appendChild(a);a.click();document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        status.innerHTML=`✅ 已合併 ${files.length} 個 PDF（共 ${mergedPdf.getPageCount()} 頁）`;
+        toast('✅ PDF 合併完成','ok');
+    }catch(e){
+        status.innerHTML='❌ 合併失敗：'+e.message;
+    }
+}
+
+// 提取文字
+function startPdfExtract(){
+    closePdfTools();
+    const input=document.createElement('input');
+    input.type='file';input.accept='.pdf';
+    input.onchange=async(e)=>{
+        const file=e.target.files[0];
+        if(!file)return;
+        toast('📝 提取文字中...','warn');
+        try{
+            if(typeof pdfjsLib==='undefined'){toast('❌ PDF 函式庫未載入','err');return;}
+            pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            const arrayBuffer=await file.arrayBuffer();
+            const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+            let txt='';
+            for(let i=1;i<=pdf.numPages;i++){
+                const page=await pdf.getPage(i);
+                const content=await page.getTextContent();
+                txt+=`=== 第 ${i} 頁 ===\n`+content.items.map(x=>x.str).join(' ')+'\n\n';
+            }
+            // 下載文字檔
+            const blob=new Blob([txt],{type:'text/plain'});
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;a.download=file.name.replace('.pdf','.txt');
+            document.body.appendChild(a);a.click();document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast(`✅ 已提取 ${pdf.numPages} 頁文字`,'ok');
+        }catch(err){toast('❌ '+err.message,'err');}
+    };
+    input.click();
+}
+
+// 提取頁面
+function startPdfPageExtract(){
+    closePdfTools();
+    const input=document.createElement('input');
+    input.type='file';input.accept='.pdf';
+    input.onchange=async(e)=>{
+        const file=e.target.files[0];
+        if(!file)return;
+        const range=prompt(`輸入要提取的頁面（例：1-3, 5, 7-10）\n檔案：${file.name}`);
+        if(!range)return;
+        toast('📄 提取頁面中...','warn');
+        try{
+            const arrayBuffer=await file.arrayBuffer();
+            const srcPdf=await PDFLib.PDFDocument.load(arrayBuffer);
+            const newPdf=await PDFLib.PDFDocument.create();
+            const pageCount=srcPdf.getPageCount();
+            
+            const ranges=range.split(',').map(r=>r.trim());
+            const indices=[];
+            for(const r of ranges){
+                if(r.includes('-')){
+                    const [start,end]=r.split('-').map(n=>parseInt(n));
+                    for(let i=start-1;i<end&&i<pageCount;i++)if(i>=0)indices.push(i);
+                }else{
+                    const idx=parseInt(r)-1;
+                    if(idx>=0&&idx<pageCount)indices.push(idx);
+                }
+            }
+            
+            const pages=await newPdf.copyPages(srcPdf,indices);
+            pages.forEach(p=>newPdf.addPage(p));
+            
+            const bytes=await newPdf.save();
+            const blob=new Blob([bytes],{type:'application/pdf'});
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');
+            a.href=url;a.download=file.name.replace('.pdf','_提取.pdf');
+            document.body.appendChild(a);a.click();document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            toast(`✅ 已提取 ${indices.length} 頁`,'ok');
+        }catch(err){toast('❌ '+err.message,'err');}
+    };
+    input.click();
+}
+
+// 🖼️ 提取 PDF 圖片
+let extractedImages=[];
+async function startPdfImageExtract(){
+    closePdfTools();
+    const input=document.createElement('input');
+    input.type='file';input.accept='.pdf';
+    input.onchange=async(e)=>{
+        const file=e.target.files[0];
+        if(!file)return;
+        toast('🖼️ 提取圖片中...','warn');
+        try{
+            extractedImages=await extractPdfImages(file);
+            if(extractedImages.length===0){
+                toast('⚠️ 未找到圖片，嘗試頁面截圖...','warn');
+                extractedImages=await extractPdfPages(file);
+            }
+            if(extractedImages.length>0){
+                showExtractedImages(file.name);
+            }else{
+                toast('❌ 無法提取圖片','err');
+            }
+        }catch(err){
+            console.error(err);
+            toast('❌ '+err.message,'err');
+        }
+    };
+    input.click();
+}
+
+// 從 PDF 提取嵌入圖片
+async function extractPdfImages(file){
+    const images=[];
+    try{
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const arrayBuffer=await file.arrayBuffer();
+        const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+        const totalPages=Math.min(pdf.numPages,100);
+        
+        for(let i=1;i<=totalPages;i++){
+            if(i%10===0||i===1)toast(`🖼️ 掃描第 ${i}/${totalPages} 頁...`,'warn');
+            const page=await pdf.getPage(i);
+            const ops=await page.getOperatorList();
+            
+            for(let j=0;j<ops.fnArray.length;j++){
+                if(ops.fnArray[j]===pdfjsLib.OPS.paintImageXObject){
+                    const imgName=ops.argsArray[j][0];
+                    try{
+                        const img=await page.objs.get(imgName);
+                        if(img&&img.data){
+                            const canvas=document.createElement('canvas');
+                            canvas.width=img.width;
+                            canvas.height=img.height;
+                            const ctx=canvas.getContext('2d');
+                            const imgData=ctx.createImageData(img.width,img.height);
+                            
+                            if(img.data.length===img.width*img.height*4){
+                                imgData.data.set(img.data);
+                            }else if(img.data.length===img.width*img.height*3){
+                                for(let k=0;k<img.width*img.height;k++){
+                                    imgData.data[k*4]=img.data[k*3];
+                                    imgData.data[k*4+1]=img.data[k*3+1];
+                                    imgData.data[k*4+2]=img.data[k*3+2];
+                                    imgData.data[k*4+3]=255;
+                                }
+                            }
+                            ctx.putImageData(imgData,0,0);
+                            
+                            if(img.width>50&&img.height>50){
+                                images.push({
+                                    page:i,
+                                    dataUrl:canvas.toDataURL('image/png'),
+                                    width:img.width,
+                                    height:img.height
+                                });
+                            }
+                        }
+                    }catch(imgErr){}
+                }
+            }
+        }
+    }catch(err){console.error('extractPdfImages:',err);}
+    return images;
+}
+
+// 將 PDF 頁面轉成圖片（備用方案）
+async function extractPdfPages(file){
+    const images=[];
+    try{
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const arrayBuffer=await file.arrayBuffer();
+        const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+        const totalPages=Math.min(pdf.numPages,100);
+        
+        for(let i=1;i<=totalPages;i++){
+            if(i%5===0||i===1)toast(`📄 轉換第 ${i}/${totalPages} 頁...`,'warn');
+            const page=await pdf.getPage(i);
+            const viewport=page.getViewport({scale:1.5});
+            const canvas=document.createElement('canvas');
+            canvas.width=viewport.width;
+            canvas.height=viewport.height;
+            const ctx=canvas.getContext('2d');
+            
+            await page.render({canvasContext:ctx,viewport:viewport}).promise;
+            images.push({
+                page:i,
+                dataUrl:canvas.toDataURL('image/jpeg',0.8),
+                width:viewport.width,
+                height:viewport.height
+            });
+        }
+    }catch(err){console.error('extractPdfPages:',err);}
+    return images;
+}
+
+// 顯示提取的圖片
+function showExtractedImages(fileName){
+    let html=`<div class="extracted-images-header">
+        <h3>🖼️ 從 ${fileName} 提取了 ${extractedImages.length} 張圖片</h3>
+        <div class="extracted-actions">
+            <button class="m-btn m-btn-sec" onclick="toggleSelectAll()">☑️ 全選/取消</button>
+            <button class="m-btn m-btn-sec" onclick="downloadAllImages()">📥 下載全部</button>
+            <button class="m-btn m-btn-pri" onclick="startAiAnalyze()">🤖 AI 轉簡報</button>
+        </div>
+    </div>
+    <div class="extracted-images-grid">`;
+    
+    extractedImages.forEach((img,i)=>{
+        html+=`<div class="extracted-img-card">
+            <img src="${img.dataUrl}" onclick="downloadSingleImage(${i})">
+            <div class="extracted-img-info">P${img.page}</div>
+            <label class="extracted-img-check"><input type="checkbox" checked data-idx="${i}"></label>
+        </div>`;
+    });
+    html+=`</div>`;
+    
+    document.getElementById('pdfToolResult').innerHTML=html;
+    document.getElementById('pdfToolStatus').classList.remove('on');
+    openPdfTools();
+}
+
+function toggleSelectAll(){
+    const checkboxes=document.querySelectorAll('.extracted-img-check input');
+    const allChecked=Array.from(checkboxes).every(cb=>cb.checked);
+    checkboxes.forEach(cb=>cb.checked=!allChecked);
+}
+
+// 下載單張圖片
+function downloadSingleImage(idx){
+    const img=extractedImages[idx];
+    const a=document.createElement('a');
+    a.href=img.dataUrl;
+    a.download=`圖片_第${img.page}頁_${idx+1}.png`;
+    a.click();
+}
+
+// 下載全部圖片
+function downloadAllImages(){
+    extractedImages.forEach((img,i)=>{
+        setTimeout(()=>{
+            const a=document.createElement('a');
+            a.href=img.dataUrl;
+            a.download=`圖片_第${img.page}頁_${i+1}.png`;
+            a.click();
+        },i*300);
+    });
+    toast(`📥 下載 ${extractedImages.length} 張圖片`,'ok');
+}
+
+// 🤖 AI 解析圖片轉簡報
+async function startAiAnalyze(){
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
+    
+    const selected=[];
+    document.querySelectorAll('.extracted-img-check input:checked').forEach(cb=>{
+        selected.push(extractedImages[parseInt(cb.dataset.idx)]);
+    });
+    
+    if(selected.length===0){toast('❌ 請選取至少一張圖片','warn');return;}
+    
+    closePdfTools();
+    toast(`🤖 AI 分析 ${selected.length} 張圖片中...`,'warn');
+    
+    const analyses=[];
+    let successCount=0;
+    
+    
+    for(let i=0;i<selected.length;i++){
+        toast(`🔍 分析第 ${i+1}/${selected.length} 張...`,'warn');
+        const img=selected[i];
+        const base64=img.dataUrl.split(',')[1];
+        
+        let analysisResult=null;
+        let retries=0;
+        
+        while(retries<3){
+            try{
+                const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+apiKey,{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({
+                        contents:[{
+                            parts:[
+                                {text:'分析這張圖片，用繁體中文回答。回傳 JSON 格式：{"title":"10字內標題","points":["重點1","重點2","重點3"],"description":"30字說明"}。只回傳JSON，不要其他文字。'},
+                                {inline_data:{mime_type:'image/png',data:base64}}
+                            ]
+                        }],
+                        generationConfig:{temperature:0.4,maxOutputTokens:800}
+                    })
+                });
+                
+                const json=await r.json();
+                console.log('AI response '+i+':',JSON.stringify(json).substring(0,300));
+                
+                if(json.candidates && json.candidates[0]){
+                    const txt=json.candidates[0].content?.parts?.[0]?.text||'';
+                    const cleaned=txt.replace(/```json/g,'').replace(/```/g,'').trim();
+                    const m=cleaned.match(/\{[\s\S]*?\}/);
+                    if(m){
+                        analysisResult=JSON.parse(m[0]);
+                        successCount++;
+                    }
+                    break;
+                }else if(json.error && json.error.code===429){
+                    retries++;
+                    toast(`⏳ 配額限制，等待...`,'warn');
+                    await new Promise(r=>setTimeout(r,(5+retries*5)*1000));
+                }else{
+                    break;
+                }
+            }catch(err){
+                console.error('Error '+i+':',err);
+                break;
+            }
+        }
+        
+        analyses.push({
+            title:analysisResult?.title||`第 ${img.page} 頁`,
+            points:analysisResult?.points||['（圖片內容）'],
+            description:analysisResult?.description||'',
+            image:img.dataUrl,
+            page:img.page
+        });
+        
+        if((i+1)%14===0 && i<selected.length-1){
+            toast(`⏳ 避免配額限制，暫停 10 秒...`,'warn');
+            await new Promise(r=>setTimeout(r,10000));
+        }else{
+            await new Promise(r=>setTimeout(r,500));
+        }
+    }
+    
+    generateSlidesFromImages(analyses);
+    toast(`✅ 完成！${successCount}/${selected.length} 張成功解析`,'ok');
+}
+
+// 從圖片分析結果生成簡報
+function generateSlidesFromImages(analyses){
+    const topicName=document.getElementById('topicInp').value.trim()||'PDF 圖片簡報';
+    topic=topicName;
+    
+    slides=[{
+        number:1,
+        type:'封面',
+        title:topicName,
+        subtitle:`從 PDF 提取 ${analyses.length} 張圖片製作`,
+        content:null
+    }];
+    
+    analyses.forEach((a,i)=>{
+        slides.push({
+            number:i+2,
+            type:'內容',
+            title:a.title||`圖片 ${i+1}`,
+            subtitle:a.description||'',
+            content:a.points||[],
+            image:a.image,
+            imageKeyword:a.title
+        });
+    });
+    
+    slides.push({
+        number:slides.length+1,
+        type:'總結',
+        title:'重點回顧',
+        content:analyses.slice(0,5).map(a=>a.title)
+    });
+    
+    toast(`✅ 已生成 ${slides.length} 頁簡報（含圖片）`,'ok');
+    showPreview();
+}
+
+// 🤖 直接 AI 圖片轉簡報（一鍵）
+function startPdfToSlides(){
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');closePdfTools();return;}
+    
+    closePdfTools();
+    const input=document.createElement('input');
+    input.type='file';input.accept='.pdf';
+    input.onchange=async(e)=>{
+        const file=e.target.files[0];
+        if(!file)return;
+        
+        toast('🤖 PDF 轉簡報中（提取頁面）...','warn');
+        try{
+            // 先提取頁面為圖片
+            extractedImages=await extractPdfPages(file);
+            
+            if(extractedImages.length===0){
+                toast('❌ 無法讀取 PDF','err');
+                return;
+            }
+            
+            // 設定主題名稱
+            const name=file.name.replace('.pdf','');
+            document.getElementById('topicInp').value=name;
+            
+            // 分析所有圖片
+            const totalImages=extractedImages.length;
+            toast(`🤖 AI 分析 ${totalImages} 張圖片中...`,'warn');
+            
+            const analyses=[];
+            let successCount=0;
+            // 使用 gemini-1.5-flash 來分析圖片（最穩定）
+            
+            
+            for(let i=0;i<totalImages;i++){
+                toast(`🔍 分析第 ${i+1}/${totalImages} 張...`,'warn');
+                const img=extractedImages[i];
+                const base64=img.dataUrl.split(',')[1];
+                
+                let analysisResult=null;
+                let retries=0;
+                const maxRetries=3;
+                
+                while(retries<maxRetries){
+                    try{
+                        const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+apiKey,{
+                            method:'POST',
+                            headers:{'Content-Type':'application/json'},
+                            body:JSON.stringify({
+                                contents:[{
+                                    parts:[
+                                        {text:'分析這張圖片，用繁體中文回答。回傳 JSON 格式：{"title":"10字內標題","points":["重點1","重點2","重點3"],"description":"30字說明"}。只回傳JSON，不要其他文字。'},
+                                        {inline_data:{mime_type:'image/jpeg',data:base64}}
+                                    ]
+                                }],
+                                generationConfig:{temperature:0.4,maxOutputTokens:800}
+                            })
+                        });
+                        
+                        const json=await r.json();
+                        console.log('API response '+i+':',JSON.stringify(json).substring(0,300));
+                        
+                        if(json.candidates && json.candidates[0]){
+                            const txt=json.candidates[0].content?.parts?.[0]?.text||'';
+                            const cleaned=txt.replace(/```json/g,'').replace(/```/g,'').trim();
+                            const m=cleaned.match(/\{[\s\S]*?\}/);
+                            if(m){
+                                analysisResult=JSON.parse(m[0]);
+                                successCount++;
+                            }
+                            break;
+                        }else if(json.error){
+                            if(json.error.code===429){
+                                retries++;
+                                const waitTime=Math.min(5+retries*5,20);
+                                toast(`⏳ 配額限制，等待 ${waitTime} 秒...`,'warn');
+                                await new Promise(r=>setTimeout(r,waitTime*1000));
+                            }else{
+                                console.error('API error:',json.error.message);
+                                break;
+                            }
+                        }
+                    }catch(err){
+                        console.error('Error '+i+':',err);
+                        break;
+                    }
+                }
+                
+                analyses.push({
+                    title:analysisResult?.title||`第 ${img.page} 頁`,
+                    points:analysisResult?.points||['（圖片內容）'],
+                    description:analysisResult?.description||'',
+                    image:img.dataUrl,
+                    page:img.page
+                });
+                
+                // 每15張暫停較長時間避免配額限制
+                if((i+1)%14===0 && i<totalImages-1){
+                    toast(`⏳ 避免配額限制，暫停 10 秒...`,'warn');
+                    await new Promise(r=>setTimeout(r,10000));
+                }else{
+                    await new Promise(r=>setTimeout(r,500));
+                }
+            }
+            
+            generateSlidesFromImages(analyses);
+            toast(`✅ 完成！${successCount}/${totalImages} 張成功解析`,'ok');
+            
+        }catch(err){
+            console.error(err);
+            toast('❌ '+err.message,'err');
+        }
+    };
+    input.click();
 }
 
 // 載入主題設定
