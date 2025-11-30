@@ -60,6 +60,10 @@ textarea.inp{min-height:60px;resize:none;line-height:1.4}
 .api-stat.wait{background:rgba(0,245,255,0.1);color:var(--cyan);border:1px solid rgba(0,245,255,0.3)}
 .api-hint{font-size:10px;color:var(--text-muted);margin-top:6px}.api-hint a{color:var(--cyan)}
 
+.tool-btn{padding:6px 10px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:8px;color:var(--purple);font-size:10px;cursor:pointer;transition:all 0.2s}
+.tool-btn:hover,.tool-btn:active{background:rgba(168,85,247,0.3);border-color:var(--purple)}
+.tool-btn.recording{background:rgba(239,68,68,0.3);border-color:var(--red);color:var(--red);animation:pulse 1s infinite}
+
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{padding:6px 10px;background:rgba(13,31,60,0.5);border:1px solid var(--border);border-radius:16px;color:var(--text-secondary);font-size:11px;cursor:pointer}
 .chip.on{border-color:var(--cyan);color:#fff;background:var(--grad-cyan);box-shadow:var(--glow-cyan)}
@@ -115,6 +119,7 @@ textarea.inp{min-height:60px;resize:none;line-height:1.4}
 .m-btn-sec{background:var(--bg-card);border:1px solid var(--border);color:var(--text-primary)}
 .m-btn-pri{background:var(--grad-cyan);border:none;color:#030614}
 .m-btn-orange{background:var(--grad-orange);border:none;color:#fff}
+.m-btn-green{background:var(--grad-green);border:none;color:#fff}
 .m-btn-purple{background:var(--grad-purple);border:none;color:#fff}
 
 /* 設定 */
@@ -198,6 +203,39 @@ textarea.inp{min-height:60px;resize:none;line-height:1.4}
 .ss-next-hint{text-align:center;padding:4px;font-size:10px;color:var(--text-muted)}
 .slideshow:fullscreen,.slideshow:-webkit-full-screen{width:100vw!important;height:100vh!important}
 
+/* 計時器 */
+.ss-timer{position:absolute;top:10px;right:10px;padding:8px 14px;background:rgba(0,0,0,0.7);border-radius:8px;font-family:'Orbitron',sans-serif;font-size:18px;color:var(--cyan);display:none;z-index:10}
+.ss-timer.on{display:block}
+.ss-timer.warn{color:var(--orange);animation:timerPulse 1s infinite}
+.ss-timer.danger{color:var(--red);animation:timerPulse 0.5s infinite}
+.ss-timer-fs{position:absolute;top:20px;right:20px;padding:12px 20px;background:rgba(0,0,0,0.8);border-radius:10px;font-family:'Orbitron',sans-serif;font-size:24px;color:#00f5ff;display:none;z-index:100}
+.ss-timer-fs.on{display:block}
+.ss-timer-fs.warn{color:#f59e0b;animation:timerPulse 1s infinite}
+.ss-timer-fs.danger{color:#ef4444;animation:timerPulse 0.5s infinite}
+@keyframes timerPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* 設定新元素 */
+.color-picker{width:40px;height:30px;border:none;border-radius:6px;cursor:pointer;background:transparent}
+.timer-inp{width:60px;padding:8px;background:rgba(3,6,20,0.5);border:1px solid var(--border);border-radius:8px;color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:14px;text-align:center}
+
+/* 淺色主題 */
+body.light{--bg-primary:#f8fafc;--bg-secondary:#e2e8f0;--bg-card:#ffffff;--text-primary:#1e293b;--text-secondary:#475569;--text-muted:#94a3b8;--border:rgba(0,0,0,0.1)}
+body.light .splash{background:#f8fafc}
+body.light .header{background:rgba(255,255,255,0.9)}
+body.light .card{background:rgba(255,255,255,0.8)}
+body.light .gen-sec{background:rgba(255,255,255,0.95)}
+body.light .modal{background:#f8fafc}
+
+/* 測驗 Modal */
+.quiz-q{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px}
+.quiz-q-title{font-weight:600;margin-bottom:10px;color:var(--cyan)}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{padding:10px 14px;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;transition:all 0.2s}
+.quiz-opt:hover{border-color:var(--cyan)}
+.quiz-opt.correct{background:rgba(16,185,129,0.2);border-color:var(--green);color:var(--green)}
+.quiz-opt.wrong{background:rgba(239,68,68,0.2);border-color:var(--red);color:var(--red)}
+.quiz-score{text-align:center;font-family:'Orbitron',sans-serif;font-size:32px;color:var(--cyan);margin:20px 0}
+
 /* 編輯 */
 .edit-field{margin-bottom:14px}
 .edit-label{font-size:10px;color:var(--text-secondary);margin-bottom:5px;display:block}
@@ -215,12 +253,54 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
 .empty{text-align:center;padding:30px;color:var(--text-muted)}
 .empty-icon{font-size:40px;margin-bottom:12px;opacity:0.3}
 
+/* 工具按鈕 */
+.tool-btn{padding:8px 12px;background:rgba(0,245,255,0.1);border:1px solid var(--border);border-radius:8px;color:var(--cyan);font-size:11px;cursor:pointer;transition:all 0.2s}
+.tool-btn:hover{background:rgba(0,245,255,0.2);border-color:var(--cyan)}
+.tool-btn:active{transform:scale(0.95)}
+.tool-btn.recording{background:rgba(239,68,68,0.2);border-color:#ef4444;color:#ef4444;animation:pulse-rec 1s infinite}
+@keyframes pulse-rec{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* 網址/數據 Modal 內容 */
+.input-modal-content{padding:16px}
+.input-modal-content textarea{width:100%;min-height:120px;padding:12px;background:rgba(3,6,20,0.5);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);font-size:13px;font-family:inherit;resize:none}
+.input-modal-content p{font-size:11px;color:var(--text-muted);margin-top:8px}
+.data-example{background:rgba(0,245,255,0.05);border:1px solid var(--border);border-radius:8px;padding:10px;margin-top:10px;font-size:11px;color:var(--text-secondary);font-family:monospace;white-space:pre-wrap}
+
+/* 圖片預覽 */
+.img-preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:10px;border:1px solid var(--border)}
+.file-info{padding:10px;background:rgba(0,245,255,0.05);border-radius:8px;margin-top:10px;font-size:11px;color:var(--text-secondary)}
+
 .toast-box{position:fixed;top:60px;left:12px;right:12px;z-index:2000;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .toast{padding:12px 14px;background:rgba(13,31,60,0.95);backdrop-filter:blur(8px);border-radius:10px;display:flex;align-items:center;gap:8px;font-size:12px;animation:toastIn 0.3s;pointer-events:auto;border:1px solid var(--border)}
 .toast.ok{border-left:3px solid #22c55e}
 .toast.err{border-left:3px solid #ef4444}
 .toast.warn{border-left:3px solid #f59e0b}
 @keyframes toastIn{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* 評分結果 */
+
+/* AI 助教聊天 */
+.chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.chat-welcome{text-align:center;color:var(--text-muted);font-size:12px;padding:20px;line-height:1.8}
+.chat-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.6}
+.chat-msg.user{align-self:flex-end;background:var(--grad-cyan);color:#030614}
+.chat-msg.ai{align-self:flex-start;background:rgba(13,31,60,0.8);color:var(--text-primary);border:1px solid var(--border)}
+.chat-msg.loading{opacity:0.7}
+.chat-msg.error{color:var(--red)}
+.chat-quick{display:flex;gap:6px;padding:10px;overflow-x:auto;border-top:1px solid var(--border)}
+.chat-quick button{padding:6px 12px;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);border-radius:16px;color:var(--purple);font-size:10px;white-space:nowrap;cursor:pointer}
+.chat-input-area{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:rgba(13,31,60,0.4)}
+.chat-input-area input{flex:1;padding:10px 14px;background:rgba(3,6,20,0.5);border:1px solid var(--border);border-radius:20px;color:var(--text-primary);font-size:13px}
+.chat-input-area button{padding:10px 18px;background:var(--grad-cyan);border:none;border-radius:20px;color:#030614;font-weight:600;font-size:12px;cursor:pointer}
+
+/* QR Code */
+.qr-image{width:200px;height:200px;margin:20px auto;display:block;border-radius:12px;background:#fff;padding:10px}
+.qr-info{text-align:center;margin:16px 0}
+.qr-topic{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+.qr-meta{font-size:12px;color:var(--text-muted)}
+.qr-btns{display:flex;gap:10px;justify-content:center;margin-top:16px}
+
+/* 學習目標 */
 
 @media(min-width:640px){
 .main{max-width:520px;margin:0 auto}
@@ -272,6 +352,17 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
                 <input type="text" class="inp" id="topicInp" placeholder="例如：牛頓運動定律">
                 <label class="inp-label">💬 補充說明</label>
                 <textarea class="inp" id="detailInp" placeholder="重點、需求..."></textarea>
+                <div class="tool-btns" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+                    <button class="tool-btn" onclick="startVoice()">🎤 語音</button>
+                    <button class="tool-btn" onclick="document.getElementById('imgUpload').click()">📸 圖片</button>
+                    <button class="tool-btn" onclick="document.getElementById('fileUpload').click()">📄 文件</button>
+                    <button class="tool-btn" onclick="openUrlModal()">🔗 網址</button>
+                    <button class="tool-btn" onclick="openDataModal()">📊 數據</button>
+                    <button class="tool-btn" onclick="randomTopic()">🎲 隨機</button>
+                    
+                </div>
+                <input type="file" id="imgUpload" accept="image/*" style="display:none" onchange="handleImage(this)">
+                <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.txt,.md" style="display:none" onchange="handleFile(this)">
             </div>
         </div>
 
@@ -387,8 +478,45 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
                         <input type="text" class="model-custom-inp" id="customModelInp" placeholder="gemini-3.0-pro">
                         <button class="model-custom-btn" onclick="useCustomModel()">套用</button>
                     </div>
-                    <p class="model-hint">💡 API 更新時可輸入新模型名稱</p>
                     <p class="model-hint" id="currentModelHint"></p>
+                </div>
+            </div>
+            <div class="set-sec">
+                <div class="set-label">🎨 自訂配色</div>
+                <div style="display:flex;gap:10px;align-items:center">
+                    <label style="font-size:11px;color:var(--text-secondary)">主色</label>
+                    <input type="color" id="customColor1" value="#667eea" class="color-picker">
+                    <label style="font-size:11px;color:var(--text-secondary)">次色</label>
+                    <input type="color" id="customColor2" value="#764ba2" class="color-picker">
+                    <button class="tool-btn" onclick="applyCustomColors()">套用</button>
+                </div>
+            </div>
+            <div class="set-sec">
+                <div class="set-label">🌙 介面主題</div>
+                <div class="chips" id="themeMode">
+                    <div class="chip on" data-v="dark" onclick="setThemeMode('dark')">🌙 深色</div>
+                    <div class="chip" data-v="light" onclick="setThemeMode('light')">☀️ 淺色</div>
+                </div>
+            </div>
+            <div class="set-sec">
+                <div class="set-label">⏱️ 播放倒數計時</div>
+                <div style="display:flex;gap:10px;align-items:center">
+                    <input type="number" id="timerMinutes" value="5" min="1" max="60" class="timer-inp">
+                    <span style="font-size:12px;color:var(--text-secondary)">分鐘</span>
+                    <div class="chips">
+                        <div class="chip" onclick="document.getElementById('timerMinutes').value=3">3分</div>
+                        <div class="chip" onclick="document.getElementById('timerMinutes').value=5">5分</div>
+                        <div class="chip" onclick="document.getElementById('timerMinutes').value=10">10分</div>
+                    </div>
+                </div>
+            </div>
+            <div class="set-sec">
+                <div class="set-label">🎬 動畫主題包</div>
+                <div class="chips" id="animTheme">
+                    <div class="chip on" data-v="random" onclick="setAnimTheme('random')">🎲 隨機</div>
+                    <div class="chip" data-v="tech" onclick="setAnimTheme('tech')">💻 科技</div>
+                    <div class="chip" data-v="cute" onclick="setAnimTheme('cute')">🎀 可愛</div>
+                    <div class="chip" data-v="formal" onclick="setAnimTheme('formal')">📊 正式</div>
                 </div>
             </div>
             <div class="set-sec">
@@ -399,7 +527,7 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
                         AI 簡報產生器 · Gemini API
                     </p>
                     <p style="font-size:10px;margin-top:8px;color:var(--text-muted)">
-                        v6.0 | Made with ❤️
+                        v10.0 | Made with ❤️
                     </p>
                 </div>
             </div>
@@ -413,6 +541,10 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
     <div class="modal">
         <div class="modal-head"><div class="modal-title">📋 歷史</div><button class="modal-x" onclick="closeHist()">✕</button></div>
         <div class="modal-body"><div class="hist-list" id="histList"></div></div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeHist()">✕ 關閉</button>
+            <button class="m-btn m-btn-orange" onclick="clearAllHist()">🗑️ 清除全部</button>
+        </div>
     </div>
 </div>
 
@@ -434,11 +566,21 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
     <div class="modal">
         <div class="modal-head"><div class="modal-title">📊 預覽</div><button class="modal-x" onclick="closePreview()">✕</button></div>
         <div class="modal-body"><div class="slides-list" id="slidesList"></div></div>
-        <div class="modal-foot">
-            <button class="m-btn m-btn-sec" onclick="closePreview()">✕</button>
-            <button class="m-btn m-btn-sec" onclick="exportMarkdown()">📝 MD</button>
-            <button class="m-btn m-btn-purple" onclick="openCanvaFromPreview()">🎨</button>
-            <button class="m-btn m-btn-pri" onclick="downloadPPTX()">📥 PPTX</button>
+        <div class="modal-foot" style="flex-direction:column;gap:8px">
+            <div style="display:flex;gap:6px;width:100%;justify-content:center">
+                <button class="m-btn m-btn-sec" onclick="openAiChat()">💬 助教</button>
+                <button class="m-btn m-btn-sec" onclick="generateQRCode()">📱 QR</button>
+                <button class="m-btn m-btn-sec" onclick="exportMarkdown()">📝 MD</button>
+                <button class="m-btn m-btn-sec" onclick="exportPDF()">📤 PDF</button>
+                <button class="m-btn m-btn-sec" onclick="copyAllText()">📋 複製</button>
+            </div>
+            <div style="display:flex;gap:6px;width:100%">
+                <button class="m-btn m-btn-sec" onclick="closePreview()" style="flex:1">✕</button>
+                
+                <button class="m-btn m-btn-green" onclick="generateQuiz()" style="flex:1">🎯 測驗</button>
+                <button class="m-btn m-btn-purple" onclick="openCanvaFromPreview()" style="flex:1">🎨 Canva</button>
+                <button class="m-btn m-btn-pri" onclick="downloadPPTX()" style="flex:1">📥 PPTX</button>
+            </div>
         </div>
     </div>
 </div>
@@ -510,6 +652,7 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
         <div class="modal-body">
             <div class="slideshow-wrap">
                 <div class="slideshow" id="slideshow"></div>
+                <div class="ss-timer" id="ssTimer"></div>
             </div>
             <div class="ss-controls">
                 <button class="ss-btn" onclick="ssPrev()">◀</button>
@@ -518,9 +661,141 @@ textarea.edit-inp{min-height:100px;resize:none;line-height:1.4}
                 <button class="ss-btn pri" onclick="ssNextItem()">⏩ 下一段</button>
             </div>
             <div class="ss-next-hint">💡 空白鍵 = 下一段動畫</div>
-            <div style="padding:10px;text-align:center">
+            <div style="padding:10px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+                <button class="ss-btn" onclick="toggleTimer()" id="timerBtn">⏱️ 開始計時</button>
+                <button class="ss-btn" onclick="toggleVoice()" id="voiceBtn">🔊 語音</button>
+                <button class="ss-btn" onclick="pauseVoice()" id="pauseBtn" style="display:none">⏸️ 暫停</button>
+                <button class="ss-btn" onclick="stopVoice()" id="stopBtn" style="display:none">⏹️ 停止</button>
                 <button class="ss-btn pri" onclick="ssFullscreen()">📺 全螢幕</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 網址輸入 Modal -->
+<div class="modal-bg" id="urlModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">🔗 網址轉簡報</div><button class="modal-x" onclick="closeUrlModal()">✕</button></div>
+        <div class="modal-body">
+            <div class="input-modal-content">
+                <textarea id="urlInput" placeholder="貼上網址，例如：&#10;https://zh.wikipedia.org/wiki/牛頓運動定律&#10;&#10;或貼上網頁文字內容..."></textarea>
+                <p>💡 支援 Wikipedia、新聞網站、部落格等，AI 會自動擷取重點</p>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeUrlModal()">✕ 取消</button>
+            <button class="m-btn m-btn-pri" onclick="processUrl()">✨ 分析產生</button>
+        </div>
+    </div>
+</div>
+
+<!-- 數據輸入 Modal -->
+<div class="modal-bg" id="dataModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">📊 數據轉簡報</div><button class="modal-x" onclick="closeDataModal()">✕</button></div>
+        <div class="modal-body">
+            <div class="input-modal-content">
+                <textarea id="dataInput" placeholder="貼上數據，例如：&#10;2020年: 100萬&#10;2021年: 150萬&#10;2022年: 200萬&#10;2023年: 280萬"></textarea>
+                <p>💡 支援各種格式：表格、CSV、數字列表等，AI 會自動分析並建議圖表</p>
+                <div class="data-example">範例格式：
+項目A: 30%
+項目B: 45%
+項目C: 25%</div>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeDataModal()">✕ 取消</button>
+            <button class="m-btn m-btn-pri" onclick="processData()">📊 分析產生</button>
+        </div>
+    </div>
+</div>
+
+<!-- 圖片分析 Modal -->
+<div class="modal-bg" id="imgModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">📸 圖片轉簡報</div><button class="modal-x" onclick="closeImgModal()">✕</button></div>
+        <div class="modal-body">
+            <div class="input-modal-content">
+                <img id="imgPreview" class="img-preview" style="display:none">
+                <div id="imgInfo" class="file-info" style="display:none"></div>
+                <p style="margin-top:12px">💡 AI 會分析圖片內容，自動產生相關簡報</p>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeImgModal()">✕ 取消</button>
+            <button class="m-btn m-btn-pri" onclick="processImage()">✨ 分析產生</button>
+        </div>
+    </div>
+</div>
+
+<!-- 文件分析 Modal -->
+<div class="modal-bg" id="fileModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">📄 文件轉簡報</div><button class="modal-x" onclick="closeFileModal()">✕</button></div>
+        <div class="modal-body">
+            <div class="input-modal-content">
+                <div id="fileInfo" class="file-info"></div>
+                <div id="fileContent" style="max-height:200px;overflow-y:auto;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;margin-top:10px;font-size:12px;color:var(--text-secondary);white-space:pre-wrap"></div>
+                <p style="margin-top:12px">💡 AI 會分析文件內容，自動產生簡報大綱</p>
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeFileModal()">✕ 取消</button>
+            <button class="m-btn m-btn-pri" onclick="processFile()">✨ 分析產生</button>
+        </div>
+    </div>
+</div>
+
+<!-- 評分 Modal -->
+
+<!-- AI 助教 Modal -->
+<div class="modal-bg" id="chatModal">
+    <div class="modal" style="height:85vh;max-height:85vh">
+        <div class="modal-head"><div class="modal-title">💬 AI 助教</div><button class="modal-x" onclick="closeAiChat()">✕</button></div>
+        <div class="modal-body" style="display:flex;flex-direction:column;padding:0">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-quick">
+                <button onclick="quickChat('幫我解釋這個主題的重點')">📖 重點解釋</button>
+                <button onclick="quickChat('補充相關知識')">📚 補充知識</button>
+                <button onclick="quickChat('產生3題練習題')">✏️ 練習題</button>
+                <button onclick="quickChat('學生可能問什麼問題？')">❓ 預測問題</button>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" placeholder="輸入問題..." onkeypress="if(event.key==='Enter')sendChat()">
+                <button onclick="sendChat()">發送</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Code Modal -->
+<div class="modal-bg" id="qrModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">📱 QR Code 分享</div><button class="modal-x" onclick="closeQRModal()">✕</button></div>
+        <div class="modal-body" style="text-align:center">
+            <img id="qrImage" class="qr-image" src="" alt="QR Code">
+            <div class="qr-info">
+                <div id="qrTopic" class="qr-topic"></div>
+                <div id="qrInfo" class="qr-meta"></div>
+            </div>
+            <div class="qr-btns">
+                <button class="m-btn m-btn-sec" onclick="downloadQR()">📥 下載圖片</button>
+                <button class="m-btn m-btn-pri" onclick="copyShareText()">📋 複製文字</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 學習目標 Modal -->
+
+<!-- 測驗 Modal -->
+<div class="modal-bg" id="quizModal">
+    <div class="modal">
+        <div class="modal-head"><div class="modal-title">🎯 互動測驗</div><button class="modal-x" onclick="closeQuiz()">✕</button></div>
+        <div class="modal-body" id="quizContent"></div>
+        <div class="modal-foot">
+            <button class="m-btn m-btn-sec" onclick="closeQuiz()">✕ 關閉</button>
+            <button class="m-btn m-btn-pri" onclick="submitQuiz()">✓ 提交答案</button>
         </div>
     </div>
 </div>
@@ -573,6 +848,8 @@ let incs=['examples','diagrams','summary','images','emoji'];
 let copyIdx=0,copied=[];
 let ssIdx=0,ssItemIdx=-1,slideAnims=[];
 let editIdx=-1;
+let animTheme='random';
+const animPacks={random:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],tech:[0,5,8,9,15,16,17],cute:[4,5,10,11,18,19],formal:[0,1,2,3,4]};
 
 document.addEventListener('DOMContentLoaded',()=>{
     loadH();renderThemes();updateModelHint();
@@ -598,6 +875,348 @@ function clearKey(){
     document.getElementById('apiStat').className='api-stat';
     toast('🗑️ 已清除','ok');
 }
+
+// ===== 實用工具功能 =====
+
+// 🎤 語音輸入
+let recognition=null;
+let isRecording=false;
+function startVoice(){
+    if(!('webkitSpeechRecognition' in window)&&!('SpeechRecognition' in window)){
+        toast('❌ 瀏覽器不支援語音輸入','err');return;
+    }
+    const btn=event.target;
+    if(isRecording){
+        recognition.stop();
+        btn.textContent='🎤 語音';
+        btn.classList.remove('recording');
+        isRecording=false;
+        return;
+    }
+    recognition=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
+    recognition.lang='zh-TW';
+    recognition.continuous=false;
+    recognition.interimResults=true;
+    recognition.onstart=()=>{
+        btn.textContent='🔴 錄音中...';
+        btn.classList.add('recording');
+        isRecording=true;
+        toast('🎤 開始說話...','ok');
+    };
+    recognition.onresult=(e)=>{
+        const t=Array.from(e.results).map(r=>r[0].transcript).join('');
+        document.getElementById('topicInp').value=t;
+    };
+    recognition.onend=()=>{
+        btn.textContent='🎤 語音';
+        btn.classList.remove('recording');
+        isRecording=false;
+        if(document.getElementById('topicInp').value)toast('✅ 語音輸入完成','ok');
+    };
+    recognition.onerror=(e)=>{
+        btn.textContent='🎤 語音';
+        btn.classList.remove('recording');
+        isRecording=false;
+        toast('❌ 語音錯誤：'+e.error,'err');
+    };
+    recognition.start();
+}
+
+// 🎲 隨機主題
+const randomTopics=[
+    // 物理
+    '牛頓運動定律','光的反射與折射','電路與歐姆定律','能量守恆定律','波動與聲音',
+    '熱傳導與熱對流','磁場與電磁感應','力的分解與合成','簡諧運動','流體力學基礎',
+    // 化學
+    '原子結構與週期表','化學鍵與分子','酸鹼中和反應','氧化還原反應','化學平衡',
+    // 生物
+    '細胞構造與功能','光合作用','呼吸作用','DNA與遺傳','生態系統',
+    // 地科
+    '板塊運動','天氣與氣候','地球的結構','太陽系行星','月相變化',
+    // 數學
+    '畢氏定理','二次方程式','三角函數','機率與統計','座標幾何',
+    // 其他
+    '人工智慧入門','環保與永續發展','太空探索','網路安全','程式設計基礎'
+];
+function randomTopic(){
+    const t=randomTopics[Math.floor(Math.random()*randomTopics.length)];
+    document.getElementById('topicInp').value=t;
+    toast(`🎲 隨機主題：${t}`,'ok');
+}
+
+// 🔗 網址轉簡報
+let urlContent='';
+function openUrlModal(){document.getElementById('urlModal').classList.add('on');}
+function closeUrlModal(){document.getElementById('urlModal').classList.remove('on');}
+async function processUrl(){
+    const input=document.getElementById('urlInput').value.trim();
+    if(!input){toast('❌ 請輸入網址或內容','warn');return;}
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
+    
+    toast('🔄 分析中...','warn');
+    try{
+        const prompt=`分析以下內容，提取主題和重點：
+${input}
+
+請回傳：{"topic":"主題名稱","details":"重點摘要（100字內）"}
+只回傳JSON`;
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const txt=(await r.json()).candidates[0].content.parts[0].text;
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+            const d=JSON.parse(m[0]);
+            document.getElementById('topicInp').value=d.topic||'';
+            document.getElementById('detailInp').value=d.details||'';
+            toast('✅ 分析完成！','ok');
+        }
+        closeUrlModal();
+    }catch(e){toast('❌ '+e.message,'err');}
+}
+
+// 📊 數據轉簡報
+function openDataModal(){document.getElementById('dataModal').classList.add('on');}
+function closeDataModal(){document.getElementById('dataModal').classList.remove('on');}
+async function processData(){
+    const input=document.getElementById('dataInput').value.trim();
+    if(!input){toast('❌ 請輸入數據','warn');return;}
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
+    
+    toast('🔄 分析數據...','warn');
+    try{
+        const prompt=`分析以下數據，建議簡報主題和視覺化方式：
+${input}
+
+請回傳：{"topic":"建議主題","details":"數據分析摘要，包含建議的圖表類型（長條圖/圓餅圖/折線圖等）"}
+只回傳JSON`;
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const txt=(await r.json()).candidates[0].content.parts[0].text;
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+            const d=JSON.parse(m[0]);
+            document.getElementById('topicInp').value=d.topic||'';
+            document.getElementById('detailInp').value=d.details||'';
+            toast('✅ 數據分析完成！','ok');
+        }
+        closeDataModal();
+    }catch(e){toast('❌ '+e.message,'err');}
+}
+
+// 📸 圖片轉簡報
+let imageBase64='';
+function handleImage(input){
+    const file=input.files[0];
+    if(!file)return;
+    if(!file.type.startsWith('image/')){toast('❌ 請上傳圖片','err');return;}
+    const reader=new FileReader();
+    reader.onload=(e)=>{
+        imageBase64=e.target.result;
+        document.getElementById('imgPreview').src=imageBase64;
+        document.getElementById('imgPreview').style.display='block';
+        document.getElementById('imgInfo').textContent=`📸 ${file.name} (${(file.size/1024).toFixed(1)}KB)`;
+        document.getElementById('imgInfo').style.display='block';
+        document.getElementById('imgModal').classList.add('on');
+    };
+    reader.readAsDataURL(file);
+    input.value='';
+}
+function closeImgModal(){document.getElementById('imgModal').classList.remove('on');imageBase64='';}
+async function processImage(){
+    if(!imageBase64){toast('❌ 請先上傳圖片','warn');return;}
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
+    
+    toast('🔄 分析圖片...','warn');
+    try{
+        const base64Data=imageBase64.split(',')[1];
+        const prompt=`分析這張圖片，建議一個教學簡報主題和內容重點。
+請回傳：{"topic":"主題名稱","details":"根據圖片建議的教學內容重點"}
+只回傳JSON`;
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[
+                {inlineData:{mimeType:'image/jpeg',data:base64Data}},
+                {text:prompt}
+            ]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const txt=(await r.json()).candidates[0].content.parts[0].text;
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+            const d=JSON.parse(m[0]);
+            document.getElementById('topicInp').value=d.topic||'';
+            document.getElementById('detailInp').value=d.details||'';
+            toast('✅ 圖片分析完成！','ok');
+        }
+        closeImgModal();
+    }catch(e){toast('❌ '+e.message,'err');}
+}
+
+// 📄 文件轉簡報
+let fileContent='';
+function handleFile(input){
+    const file=input.files[0];
+    if(!file)return;
+    document.getElementById('fileInfo').textContent=`📄 ${file.name} (${(file.size/1024).toFixed(1)}KB)`;
+    
+    if(file.name.endsWith('.txt')||file.name.endsWith('.md')){
+        const reader=new FileReader();
+        reader.onload=(e)=>{
+            fileContent=e.target.result;
+            document.getElementById('fileContent').textContent=fileContent.substring(0,1000)+(fileContent.length>1000?'...':'');
+            document.getElementById('fileModal').classList.add('on');
+        };
+        reader.readAsText(file);
+    }else{
+        fileContent='[檔案類型：'+file.name.split('.').pop().toUpperCase()+']';
+        document.getElementById('fileContent').textContent='⚠️ 僅支援 .txt 和 .md 檔案內容讀取\n其他格式請手動複製內容到補充說明';
+        document.getElementById('fileModal').classList.add('on');
+    }
+    input.value='';
+}
+function closeFileModal(){document.getElementById('fileModal').classList.remove('on');fileContent='';}
+async function processFile(){
+    if(!fileContent||fileContent.startsWith('[')){toast('❌ 無法讀取檔案內容','warn');return;}
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請先輸入 API Key','warn');return;}
+    
+    toast('🔄 分析文件...','warn');
+    try{
+        const prompt=`分析以下文件內容，提取主題和重點：
+${fileContent.substring(0,3000)}
+
+請回傳：{"topic":"主題名稱","details":"內容摘要重點（100字內）"}
+只回傳JSON`;
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.5,maxOutputTokens:500}})
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const txt=(await r.json()).candidates[0].content.parts[0].text;
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+            const d=JSON.parse(m[0]);
+            document.getElementById('topicInp').value=d.topic||'';
+            document.getElementById('detailInp').value=d.details||'';
+            toast('✅ 文件分析完成！','ok');
+        }
+        closeFileModal();
+    }catch(e){toast('❌ '+e.message,'err');}
+}
+
+// ===== 互動型功能 =====
+
+// 🏆 簡報評分
+// 💬 AI 助教
+let chatHistory=[];
+function openAiChat(){
+    if(!slides||!slides.length){toast('❌ 請先產生簡報','warn');return;}
+    chatHistory=[];
+    document.getElementById('chatMessages').innerHTML='<div class="chat-welcome">👋 嗨！我是 AI 助教，可以幫你：<br>• 解釋簡報內容<br>• 補充相關知識<br>• 產生練習題目<br>• 回答學生可能的問題</div>';
+    document.getElementById('chatModal').classList.add('on');
+}
+function closeAiChat(){document.getElementById('chatModal').classList.remove('on');}
+async function sendChat(){
+    const input=document.getElementById('chatInput');
+    const msg=input.value.trim();
+    if(!msg)return;
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請輸入 API Key','warn');return;}
+    
+    // 顯示用戶訊息
+    const msgBox=document.getElementById('chatMessages');
+    msgBox.innerHTML+=`<div class="chat-msg user">${esc(msg)}</div>`;
+    input.value='';
+    msgBox.scrollTop=msgBox.scrollHeight;
+    
+    // 顯示載入中
+    msgBox.innerHTML+=`<div class="chat-msg ai loading">💭 思考中...</div>`;
+    
+    try{
+        const slidesSummary=slides.map(s=>`${s.title}`).join(', ');
+        chatHistory.push({role:'user',parts:[{text:msg}]});
+        
+        const systemPrompt=`你是一位專業的 AI 教學助教。目前正在協助教師準備關於「${topic}」的簡報。
+簡報包含以下頁面：${slidesSummary}
+
+請根據簡報內容回答問題，提供補充資料、教學建議或練習題目。
+回答要：簡潔、專業、適合教學使用、使用繁體中文。`;
+        
+        const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                contents:[{role:'user',parts:[{text:systemPrompt}]},...chatHistory],
+                generationConfig:{temperature:0.8,maxOutputTokens:1000}
+            })
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const reply=(await r.json()).candidates[0].content.parts[0].text;
+        chatHistory.push({role:'model',parts:[{text:reply}]});
+        
+        // 移除載入中，顯示回覆
+        msgBox.querySelector('.loading')?.remove();
+        msgBox.innerHTML+=`<div class="chat-msg ai">${reply.replace(/\n/g,'<br>')}</div>`;
+        msgBox.scrollTop=msgBox.scrollHeight;
+    }catch(e){
+        msgBox.querySelector('.loading')?.remove();
+        msgBox.innerHTML+=`<div class="chat-msg ai error">❌ ${e.message}</div>`;
+    }
+}
+
+// 快速問題
+function quickChat(q){
+    document.getElementById('chatInput').value=q;
+    sendChat();
+}
+
+// 📱 QR Code 分享
+function generateQRCode(){
+    if(!slides||!slides.length){toast('❌ 請先產生簡報','warn');return;}
+    
+    // 產生簡報資料 URL（使用 data URI）
+    const data={
+        topic:topic,
+        slides:slides.map(s=>({t:s.title,c:s.content}))
+    };
+    const json=JSON.stringify(data);
+    const encoded=btoa(unescape(encodeURIComponent(json)));
+    
+    // 使用 QR Code API
+    const qrUrl=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('https://slidegenie.app/view?d='+encoded.substring(0,100))}`;
+    
+    // 因為沒有後端，改用顯示簡報摘要的 QR Code
+    const shareText=`📊 ${topic}\n${slides.length} 頁簡報\n\n${slides.slice(0,3).map(s=>s.title).join('\n')}`;
+    const shareUrl=`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(shareText)}`;
+    
+    document.getElementById('qrImage').src=shareUrl;
+    document.getElementById('qrTopic').textContent=topic;
+    document.getElementById('qrInfo').textContent=`${slides.length} 頁簡報`;
+    document.getElementById('qrModal').classList.add('on');
+}
+function closeQRModal(){document.getElementById('qrModal').classList.remove('on');}
+function downloadQR(){
+    const img=document.getElementById('qrImage');
+    const a=document.createElement('a');
+    a.href=img.src;
+    a.download=`${topic}-QRCode.png`;
+    a.click();
+    toast('✅ QR Code 已下載','ok');
+}
+function copyShareText(){
+    const text=`📊 ${topic}\n\n簡報大綱：\n${slides.map((s,i)=>`${i+1}. ${s.title}`).join('\n')}`;
+    navigator.clipboard.writeText(text).then(()=>toast('✅ 已複製分享文字','ok'));
+}
+
+// 🎯 學習目標產生
 
 // API Key 驗證
 async function verifyKey(){
@@ -663,6 +1282,13 @@ function saveH(){localStorage.setItem('sg_hist',JSON.stringify(hist));}
 function addH(t,s){hist.unshift({id:Date.now(),topic:t,slides:s,at:new Date().toISOString()});if(hist.length>20)hist=hist.slice(0,20);saveH();}
 function openHist(){renderH();document.getElementById('histModal').classList.add('on');}
 function closeHist(){document.getElementById('histModal').classList.remove('on');}
+function clearAllHist(){
+    if(!confirm('確定要清除所有歷史記錄嗎？'))return;
+    hist=[];
+    localStorage.removeItem('sg_hist');
+    renderH();
+    toast('🗑️ 已清除所有歷史','ok');
+}
 function renderH(){
     const c=document.getElementById('histList');
     if(!hist.length){c.innerHTML='<div class="empty"><div class="empty-icon">📋</div>尚無記錄</div>';return;}
@@ -675,7 +1301,7 @@ async function generate(){
     const apiKey=document.getElementById('apiInp').value.trim();
     topic=document.getElementById('topicInp').value.trim();
     if(!apiKey){toast('❌ 請輸入 API Key','warn');return;}
-    if(!topic){toast('❌ 請輸入主題','warn');return;}
+    if(!document.getElementById('topicInp').value.trim()){toast('❌ 請輸入主題','warn');return;}
     
     const btn=document.getElementById('genBtn'),prog=document.getElementById('prog'),fill=document.getElementById('progFill'),txt=document.getElementById('progTxt');
     btn.disabled=true;btn.innerHTML='<div class="spinner"></div><span>產生中...</span>';
@@ -704,7 +1330,7 @@ async function genOutline(apiKey){
     const diffMap={basic:'基礎入門',intermediate:'進階延伸',advanced:'專業深入'};
     
     const prompt=`產生簡報大綱：
-主題：${topic}
+主題：${document.getElementById('topicInp').value.trim()}
 ${detail?'補充：'+detail:''}
 對象：${audMap[aud]}
 語言：${langMap[lang]}（請用此語言撰寫所有內容）
@@ -781,7 +1407,7 @@ async function callAPI(apiKey,batch){
     const incMap={examples:'💡實例',diagrams:'📊圖表',quiz:'❓測驗',notes:'📝備註',summary:'📌總結',images:'🖼️圖片關鍵字',emoji:'😊Emoji',timeline:'📅時間軸',compare:'⚖️比較表',qna:'❔Q&A'};
     
     const prompt=`產生簡報內容：
-主題：${topic}
+主題：${document.getElementById('topicInp').value.trim()}
 對象：${audMap[aud]}
 語言：${langMap[lang]}（請用此語言撰寫所有內容）
 難度：${diffMap[diff]}
@@ -854,7 +1480,7 @@ async function regenSlide(){
     toast('🔄 重新產生...','warn');
     try{
         const prompt=`重新產生簡報頁面：
-主題：${topic}，第${s.number}頁[${s.type}]，原標題：${s.title}
+主題：${document.getElementById('topicInp').value.trim()}，第${s.number}頁[${s.type}]，原標題：${s.title}
 ${incs.includes('emoji')?'加emoji':''}
 格式：{"title":"標題","content":["重點"],"notes":"備註"}
 只回傳JSON`;
@@ -875,44 +1501,47 @@ ${incs.includes('emoji')?'加emoji':''}
 }
 
 function downloadPPTX(){
-    if(!slides?.length){toast('❌ 無簡報','err');return;}
+    if(!slides||!slides.length){toast('❌ 無簡報','err');return;}
+    if(typeof PptxGenJS==='undefined'){toast('❌ PPTX 函式庫未載入，請重新整理','err');return;}
+    toast('📥 產生 PPTX...','warn');
     const theme=themes.find(t=>t.id===themeId)||themes[0];
     try{
         const pptx=new PptxGenJS();
         pptx.layout='LAYOUT_16x9';
-        pptx.title=topic;
+        pptx.title=topic||'簡報';
         slides.forEach(sl=>{
             const s=pptx.addSlide();
             const isCover=sl.type==='封面'||sl.type==='總結';
             if(isCover){
                 s.background={color:theme.c1};
-                s.addShape('rect',{x:0,y:0,w:'100%',h:'100%',fill:{type:'solid',color:theme.c1}});
-                s.addShape('rect',{x:0,y:0,w:'100%',h:'100%',fill:{type:'solid',color:theme.c2,transparency:50}});
             }else{s.background={color:'FFFFFF'};}
             if(sl.type==='封面'){
-                s.addText(sl.title,{x:0.5,y:2,w:9,h:1.2,fontSize:36,bold:true,color:'FFFFFF',align:'center',shadow:{type:'outer',blur:6,offset:2,angle:45,color:'000000',opacity:0.3}});
-                if(sl.subtitle)s.addText(sl.subtitle,{x:0.5,y:3.3,w:9,h:0.6,fontSize:18,color:'FFFFFF',align:'center',transparency:25});
+                s.addText(sl.title||'',{x:0.5,y:2,w:9,h:1.2,fontSize:36,bold:true,color:'FFFFFF',align:'center'});
+                if(sl.subtitle)s.addText(sl.subtitle,{x:0.5,y:3.3,w:9,h:0.6,fontSize:18,color:'FFFFFF',align:'center'});
             }else if(sl.type==='總結'){
-                s.addText(sl.title,{x:0.5,y:0.6,w:9,h:0.8,fontSize:28,bold:true,color:'FFFFFF',align:'center'});
-                if(Array.isArray(sl.content))s.addText(sl.content.map(x=>'✓ '+x).join('\n'),{x:1,y:1.8,w:8,h:3.5,fontSize:16,color:'FFFFFF',lineSpacing:32});
+                s.addText(sl.title||'',{x:0.5,y:0.6,w:9,h:0.8,fontSize:28,bold:true,color:'FFFFFF',align:'center'});
+                if(Array.isArray(sl.content)&&sl.content.length){
+                    s.addText(sl.content.map(x=>'✓ '+x).join('\n'),{x:1,y:1.8,w:8,h:3.5,fontSize:16,color:'FFFFFF',lineSpacing:28});
+                }
             }else{
                 s.addShape('rect',{x:0,y:0,w:10,h:1.1,fill:{type:'solid',color:theme.c1}});
-                s.addShape('rect',{x:5,y:0,w:5,h:1.1,fill:{type:'solid',color:theme.c2,transparency:40}});
-                s.addText(sl.title,{x:0.4,y:0.2,w:9,h:0.7,fontSize:22,bold:true,color:'FFFFFF'});
-                if(Array.isArray(sl.content))s.addText(sl.content.map(x=>({text:x,options:{bullet:{type:'bullet',color:theme.c2}}})),{x:0.4,y:1.3,w:9,h:4,fontSize:14,color:'333333',paraSpaceAfter:12});
+                s.addText(sl.title||'',{x:0.4,y:0.2,w:9,h:0.7,fontSize:22,bold:true,color:'FFFFFF'});
+                if(Array.isArray(sl.content)&&sl.content.length){
+                    s.addText(sl.content.map(x=>({text:x||'',options:{bullet:true}})),{x:0.4,y:1.3,w:9,h:4,fontSize:14,color:'333333',paraSpaceAfter:8});
+                }
             }
-            s.addText(String(sl.number),{x:9.2,y:5.2,w:0.5,h:0.3,fontSize:11,color:'94A3B8',align:'right'});
-            if(sl.notes)s.addNotes(sl.notes);
+            s.addText(String(sl.number||''),{x:9.2,y:5.2,w:0.5,h:0.3,fontSize:11,color:'94A3B8',align:'right'});
         });
-        pptx.writeFile({fileName:`${topic}.pptx`});
-        toast('✅ PPTX 已下載','ok');
-        closePreview();
-    }catch(e){toast('❌ '+e.message,'err');}
+        pptx.writeFile({fileName:(topic||'簡報')+'.pptx'}).then(()=>{
+            toast('✅ PPTX 已下載','ok');
+            closePreview();
+        }).catch(e=>toast('❌ 下載失敗','err'));
+    }catch(e){console.error(e);toast('❌ PPTX錯誤：'+e.message,'err');}
 }
 
 // 匯出 Markdown
 function exportMarkdown(){
-    if(!slides?.length){toast('❌ 無簡報','err');return;}
+    if(!slides||!slides.length){toast('❌ 無簡報','err');return;}
     let md=`# ${topic}\n\n`;
     md+=`> 🎯 對象：${aud} | 🎨 風格：${style} | 📄 ${slides.length} 頁\n\n---\n\n`;
     
@@ -945,7 +1574,14 @@ function exportMarkdown(){
 }
 
 // Canva - 修正格式：標題用大字，內容用小字
-function openCanva(){copyIdx=0;copied=new Array(slides.length).fill(false);renderCopyDots();renderCopySlide();document.getElementById('canvaModal').classList.add('on');}
+function openCanva(){
+    if(!slides||!slides.length){toast('❌ 請先產生簡報','warn');return;}
+    copyIdx=0;
+    copied=new Array(slides.length).fill(false);
+    renderCopyDots();
+    renderCopySlide();
+    document.getElementById('canvaModal').classList.add('on');
+}
 function closeCanva(){document.getElementById('canvaModal').classList.remove('on');}
 function renderCopySlide(){
     const s=slides[copyIdx];
@@ -1024,19 +1660,35 @@ async function copyAll(){
 
 // HTML 播放
 function openHtml(){
+    if(!slides||!slides.length){toast('❌ 請先產生簡報','warn');return;}
+    if(!animations||!animations.length){toast('❌ 動畫資料錯誤','err');return;}
+    toast('🌐 載入動畫播放...','warn');
     ssIdx=0;ssItemIdx=-1;
-    slideAnims=slides.map(s=>{
-        const items=Array.isArray(s.content)?s.content.length:s.content?1:0;
-        return{title:Math.floor(Math.random()*20),subtitle:Math.floor(Math.random()*20),items:Array(items).fill(0).map(()=>Math.floor(Math.random()*20))};
-    });
-    renderSS();
-    document.getElementById('htmlModal').classList.add('on');
+    const pack=animPacks[animTheme]||animPacks.random;
+    try{
+        slideAnims=slides.map(s=>{
+            const items=Array.isArray(s.content)?s.content.length:s.content?1:0;
+            const rnd=()=>pack[Math.floor(Math.random()*pack.length)];
+            return{title:rnd(),subtitle:rnd(),items:Array(items).fill(0).map(()=>rnd())};
+        });
+        renderSS();
+        document.getElementById('htmlModal').classList.add('on');
+        document.getElementById('ssTimer').classList.remove('on','warn','danger');
+        if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
+    }catch(e){
+        console.error('openHtml error:',e);
+        toast('❌ 載入失敗：'+e.message,'err');
+    }
 }
-function closeHtml(){document.getElementById('htmlModal').classList.remove('on');}
+function closeHtml(){
+    document.getElementById('htmlModal').classList.remove('on');
+    if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
+    if(voiceEnabled)speechSynthesis.cancel();
+}
 
 function renderSS(){
     const theme=themes.find(t=>t.id===themeId)||themes[0];
-    document.getElementById('slideshow').innerHTML=slides.map((s,i)=>{
+    let slidesHtml=slides.map((s,i)=>{
         const anim=slideAnims[i];
         const titleAnim=animations[anim.title];
         const subAnim=animations[anim.subtitle];
@@ -1059,6 +1711,9 @@ function renderSS(){
             <div class="ss-anim-name" id="animName${i}"></div>
         </div>`;
     }).join('');
+    // 加入計時器到 slideshow 內（全螢幕時也會顯示）
+    slidesHtml+=`<div class="ss-timer-fs" id="ssTimerFS"></div>`;
+    document.getElementById('slideshow').innerHTML=slidesHtml;
     updateSS();
 }
 
@@ -1066,6 +1721,7 @@ function updateSS(){
     document.querySelectorAll('.ss-slide').forEach((s,i)=>s.classList.toggle('on',i===ssIdx));
     document.getElementById('ssCounter').textContent=`${ssIdx+1}/${slides.length}`;
     ssItemIdx=-1;
+    if(voiceEnabled&&slides&&slides[ssIdx])speakSlide(slides[ssIdx]);
 }
 
 function ssNextItem(){
@@ -1103,6 +1759,7 @@ function esc(t){if(!t)return'';const d=document.createElement('div');d.textConte
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function toast(m,t='ok'){const el=document.createElement('div');el.className='toast '+t;el.innerHTML=m;document.getElementById('toastBox').appendChild(el);setTimeout(()=>{el.style.opacity='0';setTimeout(()=>el.remove(),300);},2500);}
 
+
 document.querySelectorAll('.modal-bg').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('on');});
 
 document.addEventListener('keydown',e=>{
@@ -1114,6 +1771,268 @@ document.addEventListener('keydown',e=>{
 });
 
 document.getElementById('slideshow')?.addEventListener('click',ssNextItem);
+
+// ===== v10 新功能 =====
+
+// 📤 匯出 PDF
+function exportPDF(){
+    if(!slides||!slides.length){toast('❌ 無簡報','err');return;}
+    toast('📤 產生 PDF...','warn');
+    toast('📤 產生 PDF 中...','warn');
+    const win=window.open('','_blank');
+    const theme=themes.find(t=>t.id===themeId)||themes[0];
+    let html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${topic}</title>
+<style>
+@page{size:landscape;margin:0}
+body{margin:0;font-family:'Noto Sans TC',sans-serif}
+.slide{width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;page-break-after:always;padding:40px;box-sizing:border-box}
+.cover{background:linear-gradient(135deg,#${theme.c1},#${theme.c2});color:#fff;text-align:center}
+.cover h1{font-size:48px;margin:0}
+.cover p{font-size:24px;opacity:0.8;margin-top:16px}
+.content{background:#fff}
+.content h2{color:#${theme.c1};font-size:32px;margin-bottom:24px;padding-bottom:12px;border-bottom:3px solid #${theme.c2}}
+.content ul{font-size:20px;line-height:2}
+.summary{background:linear-gradient(135deg,#${theme.c1},#${theme.c2});color:#fff}
+.summary h2{font-size:36px;margin-bottom:20px}
+.summary ul{font-size:18px;line-height:2;list-style:none;padding:0}
+.summary li::before{content:'✓ '}
+.num{position:absolute;bottom:20px;right:30px;font-size:14px;opacity:0.5}
+</style></head><body>`;
+    slides.forEach(s=>{
+        if(s.type==='封面'){
+            html+=`<div class="slide cover"><h1>${esc(s.title)}</h1>${s.subtitle?`<p>${esc(s.subtitle)}</p>`:''}<span class="num">${s.number}</span></div>`;
+        }else if(s.type==='總結'){
+            html+=`<div class="slide summary"><h2>${esc(s.title)}</h2><ul>${Array.isArray(s.content)?s.content.map(c=>`<li>${esc(c)}</li>`).join(''):''}</ul><span class="num">${s.number}</span></div>`;
+        }else{
+            html+=`<div class="slide content"><h2>${esc(s.title)}</h2><ul>${Array.isArray(s.content)?s.content.map(c=>`<li>${esc(c)}</li>`).join(''):''}</ul><span class="num">${s.number}</span></div>`;
+        }
+    });
+    html+=`</body></html>`;
+    win.document.write(html);
+    win.document.close();
+    setTimeout(()=>{win.print();toast('✅ 請選擇「另存為 PDF」','ok');},500);
+}
+
+// 📋 複製全部文字
+function copyAllText(){
+    if(!slides||!slides.length){toast('❌ 無簡報','err');return;}
+    toast('📋 複製中...','warn');
+    let txt=`【${topic}】\n\n`;
+    slides.forEach(s=>{
+        txt+=`--- 第 ${s.number} 頁：${s.title} ---\n`;
+        if(s.subtitle)txt+=s.subtitle+'\n';
+        if(Array.isArray(s.content))txt+=s.content.map(c=>'• '+c).join('\n')+'\n';
+        else if(s.content)txt+=s.content+'\n';
+        if(s.notes)txt+='備註：'+s.notes+'\n';
+        txt+='\n';
+    });
+    navigator.clipboard.writeText(txt).then(()=>toast('✅ 已複製全部文字','ok')).catch(()=>toast('❌ 複製失敗','err'));
+}
+
+// 🎯 自動生成測驗
+let quizData=[];
+async function generateQuiz(){
+    if(!slides||!slides.length){toast('❌ 請先產生簡報','warn');return;}
+    const apiKey=document.getElementById('apiInp').value.trim();
+    if(!apiKey){toast('❌ 請輸入 API Key','warn');return;}
+    
+    toast('🎯 產生測驗中...','warn');
+    try{
+        const content=slides.map(s=>s.title+(Array.isArray(s.content)?': '+s.content.join(', '):'')).join('\n');
+        const prompt=`根據以下簡報內容，產生5題選擇題測驗：
+
+${content}
+
+請用 JSON 格式回傳，格式如下：
+{"questions":[{"q":"題目","opts":["選項A","選項B","選項C","選項D"],"ans":0}]}
+ans 是正確答案的索引（0-3）
+只回傳 JSON，不要其他文字`;
+        
+        const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+apiKey,{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:2000}})
+        });
+        if(!r.ok)throw new Error('API錯誤');
+        const txt=(await r.json()).candidates[0].content.parts[0].text;
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+            const data=JSON.parse(m[0]);
+            quizData=data.questions||[];
+            renderQuiz();
+            document.getElementById('quizModal').classList.add('on');
+        }
+    }catch(e){toast('❌ '+e.message,'err');}
+}
+function renderQuiz(){
+    document.getElementById('quizContent').innerHTML=quizData.map((q,i)=>`
+        <div class="quiz-q" data-idx="${i}">
+            <div class="quiz-q-title">${i+1}. ${esc(q.q)}</div>
+            <div class="quiz-opts">
+                ${q.opts.map((o,j)=>`<div class="quiz-opt" data-opt="${j}" onclick="selectOpt(${i},${j})">${esc(o)}</div>`).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+function selectOpt(qIdx,optIdx){
+    document.querySelectorAll(`.quiz-q[data-idx="${qIdx}"] .quiz-opt`).forEach(o=>o.classList.remove('selected'));
+    document.querySelector(`.quiz-q[data-idx="${qIdx}"] .quiz-opt[data-opt="${optIdx}"]`).classList.add('selected');
+    document.querySelector(`.quiz-q[data-idx="${qIdx}"] .quiz-opt[data-opt="${optIdx}"]`).style.borderColor='var(--cyan)';
+}
+function submitQuiz(){
+    let score=0;
+    quizData.forEach((q,i)=>{
+        const selected=document.querySelector(`.quiz-q[data-idx="${i}"] .quiz-opt.selected`);
+        const correct=document.querySelector(`.quiz-q[data-idx="${i}"] .quiz-opt[data-opt="${q.ans}"]`);
+        correct.classList.add('correct');
+        if(selected){
+            const selIdx=parseInt(selected.dataset.opt);
+            if(selIdx===q.ans)score++;
+            else selected.classList.add('wrong');
+        }
+    });
+    document.getElementById('quizContent').innerHTML=`<div class="quiz-score">${score}/${quizData.length}</div><p style="text-align:center;color:var(--text-secondary)">答對 ${score} 題，共 ${quizData.length} 題</p>`+document.getElementById('quizContent').innerHTML;
+    toast(`🎯 得分：${score}/${quizData.length}`,'ok');
+}
+function closeQuiz(){document.getElementById('quizModal').classList.remove('on');}
+
+// 🎨 自訂配色
+function applyCustomColors(){
+    const c1=document.getElementById('customColor1').value.replace('#','');
+    const c2=document.getElementById('customColor2').value.replace('#','');
+    themes.push({id:'custom',name:'自訂',c1:c1,c2:c2,css:'linear-gradient(135deg,#'+c1+',#'+c2+')'});
+    themeId='custom';
+    renderThemes();
+    toast('🎨 已套用自訂配色','ok');
+}
+
+// 🌙 深淺主題
+function setThemeMode(mode){
+    document.body.classList.remove('light','dark');
+    if(mode==='light')document.body.classList.add('light');
+    document.querySelectorAll('#themeMode .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===mode));
+    localStorage.setItem('sg_theme',mode);
+    toast(mode==='light'?'☀️ 淺色主題':'🌙 深色主題','ok');
+}
+
+// 🎬 動畫主題包
+function setAnimTheme(t){
+    animTheme=t;
+    document.querySelectorAll('#animTheme .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===t));
+    toast('🎬 動畫主題：'+{random:'隨機',tech:'科技',cute:'可愛',formal:'正式'}[t],'ok');
+}
+
+// ⏱️ 倒數計時
+let timerInterval=null;
+let timerSeconds=0;
+let timerRunning=false;
+function toggleTimer(){
+    const el=document.getElementById('ssTimer');
+    const elFS=document.getElementById('ssTimerFS');
+    const btn=document.getElementById('timerBtn');
+    if(timerRunning){
+        clearInterval(timerInterval);
+        timerRunning=false;
+        el.classList.remove('on');
+        if(elFS)elFS.classList.remove('on');
+        btn.textContent='⏱️ 開始計時';
+        toast('⏱️ 計時器已停止','ok');
+    }else{
+        timerSeconds=parseInt(document.getElementById('timerMinutes').value||5)*60;
+        timerRunning=true;
+        el.classList.add('on');
+        if(elFS)elFS.classList.add('on');
+        btn.textContent='⏱️ 停止計時';
+        updateTimerDisplay();
+        timerInterval=setInterval(()=>{
+            timerSeconds--;
+            updateTimerDisplay();
+            if(timerSeconds<=0){
+                clearInterval(timerInterval);
+                timerRunning=false;
+                el.classList.add('danger');
+                if(elFS)elFS.classList.add('danger');
+                btn.textContent='⏱️ 開始計時';
+                toast('⏰ 時間到！','warn');
+            }
+        },1000);
+        toast('⏱️ 計時器開始','ok');
+    }
+}
+function updateTimerDisplay(){
+    const el=document.getElementById('ssTimer');
+    const elFS=document.getElementById('ssTimerFS');
+    const m=Math.floor(timerSeconds/60);
+    const s=timerSeconds%60;
+    const txt=m+':'+(s<10?'0':'')+s;
+    el.textContent=txt;
+    if(elFS)elFS.textContent=txt;
+    el.classList.remove('warn','danger');
+    if(elFS)elFS.classList.remove('warn','danger');
+    if(timerSeconds<=60){el.classList.add('warn');if(elFS)elFS.classList.add('warn');}
+    if(timerSeconds<=10){el.classList.add('danger');if(elFS)elFS.classList.add('danger');}
+}
+
+// 🔊 語音播放
+let voiceEnabled=false;
+let voicePaused=false;
+function toggleVoice(){
+    voiceEnabled=!voiceEnabled;
+    const voiceBtn=document.getElementById('voiceBtn');
+    const pauseBtn=document.getElementById('pauseBtn');
+    const stopBtn=document.getElementById('stopBtn');
+    if(voiceEnabled){
+        voiceBtn.textContent='🔊 語音開';
+        voiceBtn.style.background='var(--grad-green)';
+        voiceBtn.style.color='#030614';
+        pauseBtn.style.display='inline-block';
+        stopBtn.style.display='inline-block';
+        toast('🔊 語音已開啟','ok');
+        if(slides&&slides[ssIdx])speakSlide(slides[ssIdx]);
+    }else{
+        voiceBtn.textContent='🔊 語音';
+        voiceBtn.style.background='';
+        voiceBtn.style.color='';
+        pauseBtn.style.display='none';
+        stopBtn.style.display='none';
+        speechSynthesis.cancel();
+        toast('🔇 語音已關閉','ok');
+    }
+}
+function pauseVoice(){
+    if(!('speechSynthesis' in window))return;
+    const btn=document.getElementById('pauseBtn');
+    if(speechSynthesis.paused){
+        speechSynthesis.resume();
+        btn.textContent='⏸️ 暫停';
+        voicePaused=false;
+    }else{
+        speechSynthesis.pause();
+        btn.textContent='▶️ 繼續';
+        voicePaused=true;
+    }
+}
+function stopVoice(){
+    if(!('speechSynthesis' in window))return;
+    speechSynthesis.cancel();
+    document.getElementById('pauseBtn').textContent='⏸️ 暫停';
+    voicePaused=false;
+    toast('⏹️ 語音已停止','ok');
+}
+function speakSlide(s){
+    if(!voiceEnabled||!('speechSynthesis' in window))return;
+    speechSynthesis.cancel();
+    let txt=s.title;
+    if(Array.isArray(s.content))txt+='. '+s.content.join('. ');
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang='zh-TW';
+    u.rate=0.9;
+    speechSynthesis.speak(u);
+    document.getElementById('pauseBtn').textContent='⏸️ 暫停';
+    voicePaused=false;
+}
+
+// 載入主題設定
+if(localStorage.getItem('sg_theme')==='light')setThemeMode('light');
 </script>
 </body>
 </html>
